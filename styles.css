@@ -1,0 +1,216 @@
+/* @settings
+name: Composer Enhanced
+id: obsidian-composer-enhanced
+settings:
+  - id: composer-enhanced-about
+    title: About Composer Enhanced
+    title.zh: 关于 Composer Enhanced
+    description: "Composer Enhanced is an independent companion plugin for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It restores callout colors for Composer 0.7.0 and adds local presentation controls without modifying theme or note files."
+    description.zh: "Composer Enhanced 是 [Composer 主题](https://github.com/vran-dev/obsidian-composer)的独立配套插件。它会修复 Composer 0.7.0 的 Callout 颜色，并在不修改主题或笔记文件的前提下提供本地显示控制。"
+    type: info-text
+    markdown: true
+  - id: composer-enhanced-compatibility-fixes
+    title: Compatibility fixes
+    title.zh: 兼容性修复
+    type: heading
+    level: 2
+    collapsed: false
+  - id: composer-enhanced-enable-callout-fix
+    title: Enable Composer 0.7.0 callout fix
+    title.zh: 启用 Composer 0.7.0 Callout 修复
+    description: Keep this on to restore callout colors with Composer 0.7.0. Turn it off after Composer fixes the issue upstream.
+    description.zh: 使用 Composer 0.7.0 时保持开启以恢复 Callout 颜色。Composer 上游修复问题后可将其关闭。
+    type: class-toggle
+    default: true
+  - id: composer-enhanced-content-alignment
+    title: Content alignment
+    title.zh: 内容对齐
+    type: heading
+    level: 2
+    collapsed: false
+  - id: composer-enhanced-image-alignment
+    title: Block image alignment
+    title.zh: 块级图片对齐
+    description: Align standalone images in Reading view and Live Preview. Inline images keep their original flow.
+    description.zh: 对齐阅读视图和实时预览中独占一行的图片。行内图片保持原有排版。
+    type: class-select
+    allowEmpty: false
+    default: composer-enhanced-image-align-center
+    options:
+      - label: Center / 居中
+        value: composer-enhanced-image-align-center
+      - label: Left / 靠左
+        value: composer-enhanced-image-align-left
+      - label: Right / 靠右
+        value: composer-enhanced-image-align-right
+  - id: composer-enhanced-table-alignment
+    title: Table alignment
+    title.zh: 表格对齐
+    description: Align Markdown and rendered HTML tables in Reading view and Live Preview.
+    description.zh: 对齐阅读视图和实时预览中的 Markdown 表格及已渲染 HTML 表格。
+    type: class-select
+    allowEmpty: false
+    default: composer-enhanced-table-align-center
+    options:
+      - label: Center / 居中
+        value: composer-enhanced-table-align-center
+      - label: Left / 靠左
+        value: composer-enhanced-table-align-left
+      - label: Right / 靠右
+        value: composer-enhanced-table-align-right
+*/
+
+body.composer-enhanced {
+	--composer-enhanced-image-text-align: center;
+	--composer-enhanced-image-margin-start: auto;
+	--composer-enhanced-image-margin-end: auto;
+	--composer-enhanced-table-margin-start: auto;
+	--composer-enhanced-table-margin-end: auto;
+}
+
+/* Style Settings owns the positive class when present; otherwise the fix defaults on. */
+body.composer-enhanced:not(.css-settings-manager),
+body.composer-enhanced.composer-enhanced-enable-callout-fix {
+	/* Composer 0.7.0 exposes RGB triplets where Obsidian 1.13 expects colors. */
+	--callout-bug: rgb(var(--color-red-rgb));
+	--callout-default: rgb(var(--color-blue-rgb));
+	--callout-example: rgb(var(--color-purple-rgb));
+	--callout-fail: rgb(var(--color-red-rgb));
+	--callout-important: rgb(var(--color-cyan-rgb));
+	--callout-info: rgb(var(--color-blue-rgb));
+	--callout-question: rgb(var(--color-orange-rgb));
+	--callout-success: rgb(var(--color-green-rgb));
+	--callout-summary: rgb(var(--color-cyan-rgb));
+	--callout-tip: rgb(var(--color-cyan-rgb));
+	--callout-todo: rgb(var(--color-blue-rgb));
+}
+
+body.composer-enhanced.theme-light:not(.css-settings-manager),
+body.composer-enhanced.theme-light.composer-enhanced-enable-callout-fix {
+	--callout-error: rgb(158, 48, 57);
+	--callout-warning: rgb(191, 127, 63);
+	--callout-quote: rgb(158, 158, 158);
+}
+
+body.composer-enhanced.theme-dark:not(.css-settings-manager),
+body.composer-enhanced.theme-dark.composer-enhanced-enable-callout-fix {
+	--callout-error: rgb(255, 100, 92);
+	--callout-warning: rgb(255, 170, 92);
+	--callout-quote: rgb(158, 158, 158);
+}
+
+/* Keep Composer's Ni palette while converting its callout values to colors. */
+body.composer-enhanced.composer--NiScheme-light.theme-light:not(
+		.css-settings-manager
+	),
+body.composer-enhanced.composer--NiScheme-light.theme-light.composer-enhanced-enable-callout-fix {
+	--callout-bug: rgb(var(--color-red-rgb));
+	--callout-default: rgb(161, 140, 193);
+	--callout-error: rgb(214, 74, 122);
+	--callout-example: rgb(107, 197, 187);
+	--callout-fail: rgb(214, 74, 122);
+	--callout-important: rgb(232, 129, 94);
+	--callout-info: rgb(101, 176, 199);
+	--callout-question: rgb(233, 196, 118);
+	--callout-success: rgb(107, 178, 148);
+	--callout-summary: rgb(161, 140, 193);
+	--callout-tip: rgb(107, 197, 187);
+	--callout-todo: rgb(230, 170, 185);
+	--callout-warning: rgb(233, 196, 118);
+	--callout-quote: rgb(180, 180, 180);
+}
+
+body.composer-enhanced.composer--NiScheme-dark.theme-dark:not(
+		.css-settings-manager
+	),
+body.composer-enhanced.composer--NiScheme-dark.theme-dark.composer-enhanced-enable-callout-fix {
+	--callout-bug: rgb(var(--color-red-rgb));
+	--callout-default: rgb(141, 120, 173);
+	--callout-error: rgb(184, 64, 102);
+	--callout-example: rgb(87, 177, 167);
+	--callout-fail: rgb(184, 64, 102);
+	--callout-important: rgb(202, 109, 74);
+	--callout-info: rgb(91, 156, 179);
+	--callout-question: rgb(203, 166, 88);
+	--callout-success: rgb(87, 158, 128);
+	--callout-summary: rgb(141, 120, 173);
+	--callout-tip: rgb(87, 177, 167);
+	--callout-todo: rgb(200, 140, 155);
+	--callout-warning: rgb(203, 166, 88);
+	--callout-quote: rgb(150, 150, 150);
+}
+
+body.composer-enhanced.composer-enhanced-image-align-center {
+	--composer-enhanced-image-text-align: center;
+	--composer-enhanced-image-margin-start: auto;
+	--composer-enhanced-image-margin-end: auto;
+}
+
+body.composer-enhanced.composer-enhanced-image-align-left {
+	--composer-enhanced-image-text-align: start;
+	--composer-enhanced-image-margin-start: 0;
+	--composer-enhanced-image-margin-end: auto;
+}
+
+body.composer-enhanced.composer-enhanced-image-align-right {
+	--composer-enhanced-image-text-align: end;
+	--composer-enhanced-image-margin-start: auto;
+	--composer-enhanced-image-margin-end: 0;
+}
+
+body.composer-enhanced.composer-enhanced-table-align-center {
+	--composer-enhanced-table-margin-start: auto;
+	--composer-enhanced-table-margin-end: auto;
+}
+
+body.composer-enhanced.composer-enhanced-table-align-left {
+	--composer-enhanced-table-margin-start: 0;
+	--composer-enhanced-table-margin-end: auto;
+}
+
+body.composer-enhanced.composer-enhanced-table-align-right {
+	--composer-enhanced-table-margin-start: auto;
+	--composer-enhanced-table-margin-end: 0;
+}
+
+body.composer-enhanced .markdown-rendered p:has(> :is(.image-embed, img):only-child),
+body.composer-enhanced
+	.markdown-rendered
+	p:has(> a:only-child > :is(.image-embed, img):only-child),
+body.composer-enhanced
+	.markdown-source-view.mod-cm6
+	.cm-line:has(.cm-embed-block .image-embed),
+body.composer-enhanced
+	.markdown-source-view.mod-cm6
+	.cm-line:has(> .cm-embed-block.image-embed),
+body.composer-enhanced
+	.markdown-source-view.mod-cm6
+	.cm-line:has(> .cm-embed-block > img) {
+	text-align: var(--composer-enhanced-image-text-align) !important;
+}
+
+body.composer-enhanced .markdown-rendered p > .image-embed:only-child,
+body.composer-enhanced .markdown-rendered p > .image-embed:only-child > img,
+body.composer-enhanced .markdown-rendered p > img:only-child,
+body.composer-enhanced
+	.markdown-rendered
+	p
+	> a:only-child
+	> :is(.image-embed, img):only-child,
+body.composer-enhanced
+	.markdown-source-view.mod-cm6
+	.cm-embed-block.image-embed,
+body.composer-enhanced
+	.markdown-source-view.mod-cm6
+	.cm-embed-block
+	:is(.image-embed, img) {
+	margin-inline-start: var(--composer-enhanced-image-margin-start) !important;
+	margin-inline-end: var(--composer-enhanced-image-margin-end) !important;
+}
+
+body.composer-enhanced .markdown-rendered table,
+body.composer-enhanced .markdown-source-view.mod-cm6 .cm-table-widget table,
+body.composer-enhanced .markdown-source-view.mod-cm6 .cm-html-embed table {
+	margin-inline-start: var(--composer-enhanced-table-margin-start) !important;
+	margin-inline-end: var(--composer-enhanced-table-margin-end) !important;
+}

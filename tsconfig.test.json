@@ -1,0 +1,20 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"inlineSourceMap": false,
+		"inlineSources": false,
+		"module": "CommonJS",
+		"outDir": ".test-dist",
+		"rootDir": ".",
+		"skipLibCheck": true,
+		"types": ["node"]
+	},
+	"include": [
+		"src/**/*.ts",
+		"tests/**/*.ts"
+	],
+	"exclude": [
+		".test-dist",
+		"node_modules"
+	]
+}
