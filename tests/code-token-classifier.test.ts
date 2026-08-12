@@ -9,7 +9,8 @@ import {
 void test("classifies Python identifiers like CodeMirror", () => {
 	assert.equal(classify("self"), "variable");
 	assert.equal(classify("thought_match"), "variable");
-	assert.equal(classify("search", ".", "("), "property");
+	assert.equal(classify("search", ".", "("), "function");
+	assert.equal(classify("result", "."), "property");
 	assert.equal(classify("print", undefined, "("), "function");
 	assert.equal(classify("None"), "keyword");
 	assert.equal(classify("HelloAgentsLLM", ":"), "type");
@@ -19,7 +20,7 @@ void test("keeps Python soft keywords sensitive to their context", () => {
 	assert.equal(classify("match", undefined, "="), "variable");
 	assert.equal(classify("match", undefined, ":"), "variable");
 	assert.equal(classify("match", undefined, "."), "variable");
-	assert.equal(classify("match", ".", "("), "property");
+	assert.equal(classify("match", ".", "("), "function");
 	assert.equal(classify("match", undefined, "value"), "keyword");
 });
 

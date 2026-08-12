@@ -92,6 +92,10 @@ export function classifyCodeIdentifier({
 	const normalizedLanguage = language.replace(/^language-/u, "").toLowerCase();
 
 	if (previousCharacter === ".") {
+		if (nextCharacter === "(") {
+			return "function";
+		}
+
 		return "property";
 	}
 

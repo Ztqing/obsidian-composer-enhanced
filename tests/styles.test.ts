@@ -135,6 +135,7 @@ void test("maps the One Dark Pro palette to Obsidian code semantics", () => {
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-property: #e06c75;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-value: #d19a66;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-caret: #528bff;/u);
+	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-variable: #e06c75;/u);
 	assert.doesNotMatch(paletteRule[1] ?? "", /^\s*--code(?:block)?-/mu);
 	assert.match(
 		styles,
@@ -172,7 +173,43 @@ void test("applies One Dark Pro to all three Markdown views", () => {
 		styles,
 		/pre[\s\S]*?> code[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
 	);
+	assertSemanticTokenMapping(styles, "comment", ".token.comment", ".cm-comment");
+	assertSemanticTokenMapping(styles, "keyword", ".token.keyword", ".cm-keyword");
+	assertSemanticTokenMapping(styles, "operator", ".token.operator", ".cm-operator");
+	assertSemanticTokenMapping(styles, "string", ".token.string", ".cm-string");
+	assertSemanticTokenMapping(styles, "value", ".token.number", ".cm-number");
+	assertSemanticTokenMapping(styles, "function", ".token.function", ".cm-def");
+	assertSemanticTokenMapping(styles, "property", ".token.property", ".cm-property");
+	assertSemanticTokenMapping(styles, "variable", ".token.variable", ".cm-variable");
+	assertSemanticTokenMapping(styles, "type", ".token.class-name", ".cm-type");
+	assertSemanticTokenMapping(styles, "attribute", ".token.attr-name", ".cm-attribute");
+	assertSemanticTokenMapping(styles, "tag", ".token.tag", ".cm-tag");
+	assertSemanticTokenMapping(
+		styles,
+		"punctuation",
+		".token.punctuation",
+		".cm-punctuation",
+	);
 });
+
+function assertSemanticTokenMapping(
+	styles: string,
+	semantic: string,
+	readingToken: string,
+	editorToken: string,
+): void {
+	assert.match(
+		styles,
+		new RegExp(
+			`${escapeRegExp(readingToken)}[\\s\\S]*?${escapeRegExp(editorToken)}[\\s\\S]*?color:\\s*${escapeRegExp(`var(--composer-enhanced-code-${semantic})`)};`,
+			"u",
+		),
+	);
+}
+
+function escapeRegExp(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}
 
 void test("uses a positive toggle for the Composer callout compatibility fix", () => {
 	const styles = readFileSync("styles.css", "utf8");

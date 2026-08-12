@@ -225,6 +225,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-caret: #528bff;
 	--composer-enhanced-code-type: #e5c07b;
 	--composer-enhanced-code-attribute: #d19a66;
+	--composer-enhanced-code-variable: #e06c75;
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -276,18 +277,214 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-variable {
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(
+		.token.comment,
+		.token.prolog,
+		.token.doctype,
+		.token.cdata,
+		.cm-comment
+	) {
+	color: var(--composer-enhanced-code-comment);
+	font-style: italic;
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.atrule, .token.keyword, .cm-keyword, .cm-meta) {
+	color: var(--composer-enhanced-code-keyword);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.operator, .token.entity, .token.url, .cm-operator) {
+	color: var(--composer-enhanced-code-operator);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(
+		.token.string,
+		.token.char,
+		.token.regex,
+		.token.attr-value,
+		.token.inserted,
+		.cm-string,
+		.cm-string-2
+	) {
+	color: var(--composer-enhanced-code-string);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(
+		.token.boolean,
+		.token.number,
+		.token.constant,
+		.token.symbol,
+		.token.unit,
+		.cm-number,
+		.cm-atom,
+		.cm-bool
+	) {
+	color: var(--composer-enhanced-code-value);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(
+		.token.function,
+		.token.function-variable,
+		.token.builtin,
+		.cm-def,
+		.cm-builtin
+	) {
+	color: var(--composer-enhanced-code-function);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.property, .cm-property) {
 	color: var(--composer-enhanced-code-property);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
 	:is(
-		.composer-enhanced-code-token-function,
-		.composer-enhanced-code-token-property
+		.token.variable,
+		.token.parameter,
+		.cm-variable,
+		.cm-variable-2,
+		.cm-variable-3
 	) {
+	color: var(--composer-enhanced-code-variable);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.class-name, .token.namespace, .cm-type) {
+	color: var(--composer-enhanced-code-type);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.attr-name, .cm-attribute) {
+	color: var(--composer-enhanced-code-attribute);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.tag, .token.selector, .cm-tag, .cm-qualifier) {
+	color: var(--composer-enhanced-code-tag);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.punctuation, .cm-punctuation, .cm-bracket, .cm-hr) {
+	color: var(--composer-enhanced-code-punctuation);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	:where(
+		.markdown-reading-view
+			.markdown-preview-view
+			pre
+			> code[class*="language-"],
+		.markdown-source-view.mod-cm6 .HyperMD-codeblock
+	)
+	:is(.token.deleted, .token.important, .cm-error, .cm-invalidchar) {
+	color: var(--composer-enhanced-code-important);
+}
+
+/* Reading view normalization only fills gaps left by Prism's token stream. */
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-variable {
+	color: var(--composer-enhanced-code-variable);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-function {
 	color: var(--composer-enhanced-code-function);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-property {
+	color: var(--composer-enhanced-code-property);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -325,49 +522,6 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.markdown-source-view.mod-cm6:not(.is-live-preview)
 	.cm-line.HyperMD-codeblock {
 	color: var(--composer-enhanced-code-normal);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.markdown-preview-view
-	pre
-	.token.class-name,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.HyperMD-codeblock
-	.cm-type {
-	color: var(--composer-enhanced-code-type);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.markdown-preview-view
-	pre
-	.token.attr-name,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.HyperMD-codeblock
-	.cm-attribute {
-	color: var(--composer-enhanced-code-attribute);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.HyperMD-codeblock
-	.cm-def {
-	color: var(--composer-enhanced-code-function);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.markdown-preview-view
-	pre
-	:is(.token.comment, .token.prolog, .token.doctype, .token.cdata),
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.HyperMD-codeblock
-	.cm-comment {
-	font-style: italic;
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
