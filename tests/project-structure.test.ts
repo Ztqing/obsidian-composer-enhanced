@@ -53,6 +53,63 @@ void test("registers and cleans up Reading view code token normalization", () =>
 	assert.match(readingCodeSource, /this\.observer\?\.disconnect\(\);/u);
 });
 
+void test("registers and cleans up block image layout markers", () => {
+	const mainSource = readFileSync("src/main.ts", "utf8");
+	const blockImageSource = readFileSync(
+		"src/features/block-image-layout.ts",
+		"utf8",
+	);
+	const blockImageStateSource = readFileSync(
+		"src/features/block-image-layout-state.ts",
+		"utf8",
+	);
+
+	assert.match(mainSource, /registerBlockImageLayout\(this\);/u);
+	assert.match(mainSource, /cleanupBlockImageLayout\(document\);/u);
+	assert.match(
+		blockImageStateSource,
+		/export const BLOCK_IMAGE_CLASS = "composer-enhanced-block-image";/u,
+	);
+	assert.match(
+		blockImageStateSource,
+		/export const BLOCK_IMAGE_CARRIER_CLASS =[\s\S]*?"composer-enhanced-block-image-carrier";/u,
+	);
+	assert.match(
+		blockImageStateSource,
+		/export const AUTOMATIC_BLOCK_IMAGE_CLASS =[\s\S]*?"composer-enhanced-automatic-block-image";/u,
+	);
+	assert.match(blockImageStateSource, /\.classList\.toggle\(BLOCK_IMAGE_CLASS/u);
+	assert.match(
+		blockImageStateSource,
+		/carrier\.classList\.add\(BLOCK_IMAGE_CARRIER_CLASS\);[\s\S]*?carrier\.classList\.toggle\([\s\S]*?AUTOMATIC_BLOCK_IMAGE_CLASS,[\s\S]*?isAutomaticallySizedImage\(carrier\)/u,
+	);
+	assert.match(
+		blockImageStateSource,
+		/element\.style\.width[\s\S]*?element\.style\.height[\s\S]*?element\.style\.maxWidth[\s\S]*?element\.style\.maxHeight/u,
+	);
+	assert.match(
+		blockImageStateSource,
+		/element\.classList\.remove\([\s\S]*?BLOCK_IMAGE_CLASS,[\s\S]*?BLOCK_IMAGE_CARRIER_CLASS,[\s\S]*?AUTOMATIC_BLOCK_IMAGE_CLASS/u,
+	);
+	assert.match(
+		blockImageSource,
+		/attributeFilter: \["class", "style", "width", "height"\]/u,
+	);
+	assert.match(
+		blockImageSource,
+		/const MARKDOWN_VIEW_SELECTOR = "\.markdown-source-view\.mod-cm6";/u,
+	);
+	assert.doesNotMatch(blockImageSource, /captions-/u);
+	assert.doesNotMatch(blockImageStateSource, /captions-/u);
+	assert.match(blockImageSource, /mutations\.some\(mutationAffectsBlockImageLayout\)/u);
+	assert.match(
+		blockImageSource,
+		/view\.classList\.contains\("is-live-preview"\)/u,
+	);
+	assert.match(blockImageSource, /observer\.disconnect\(\);/u);
+	assert.match(blockImageSource, /cleanupBlockImageLayout\(view\);/u);
+});
+
 function readJson<T>(path: string): T {
 	return JSON.parse(readFileSync(path, "utf8")) as T;
 }

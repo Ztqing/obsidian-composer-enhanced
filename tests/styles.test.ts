@@ -11,6 +11,7 @@ void test("registers an independent Style Settings section", () => {
 	assert.match(styles, /\n\s+type: info-text\n/u);
 	assert.match(styles, /\n\s+type: class-toggle\n/u);
 	assert.match(styles, /\n\s+type: class-select\n/u);
+	assert.match(styles, /\n\s+type: variable-number-slider\n/u);
 });
 
 void test("reserves the plugin namespace for future settings", () => {
@@ -25,6 +26,24 @@ void test("reserves the plugin namespace for future settings", () => {
 
 void test("offers independent image and table alignment controls", () => {
 	const styles = readFileSync("styles.css", "utf8");
+	const imageHeading = styles.indexOf("id: composer-enhanced-image-layout");
+	const imageAlignment = styles.indexOf("id: composer-enhanced-image-alignment");
+	const tableHeading = styles.indexOf("id: composer-enhanced-table-layout");
+	const tableAlignment = styles.indexOf("id: composer-enhanced-table-alignment");
+
+	assert.ok(imageHeading >= 0);
+	assert.ok(imageHeading < imageAlignment);
+	assert.ok(imageAlignment < tableHeading);
+	assert.ok(tableHeading < tableAlignment);
+	assert.match(
+		styles,
+		/id: composer-enhanced-image-layout[\s\S]*?title: Images[\s\S]*?title\.zh: 图片[\s\S]*?type: heading[\s\S]*?level: 2/u,
+	);
+	assert.match(
+		styles,
+		/id: composer-enhanced-table-layout[\s\S]*?title: Tables[\s\S]*?title\.zh: 表格[\s\S]*?type: heading[\s\S]*?level: 2/u,
+	);
+	assert.doesNotMatch(styles, /id: composer-enhanced-content-alignment/u);
 
 	assert.match(
 		styles,
@@ -49,6 +68,45 @@ void test("offers independent image and table alignment controls", () => {
 	assert.match(styles, /label: Center \/ 居中/u);
 	assert.match(styles, /label: Left \/ 靠左/u);
 	assert.match(styles, /label: Right \/ 靠右/u);
+});
+
+void test("offers percentage image width and three table width modes", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/id: composer-enhanced-image-width[\s\S]*?type: variable-number-slider[\s\S]*?default: 100[\s\S]*?min: 10[\s\S]*?max: 100[\s\S]*?step: 5[\s\S]*?format: "%"/u,
+	);
+	assert.match(
+		styles,
+		/id: composer-enhanced-table-width[\s\S]*?type: class-select[\s\S]*?default: composer-enhanced-table-width-default/u,
+	);
+
+	for (const mode of ["default", "full", "content"]) {
+		assert.match(
+			styles,
+			new RegExp(`value: composer-enhanced-table-width-${mode}`, "u"),
+		);
+	}
+
+	assert.match(styles, /label: Default \/ 默认/u);
+	assert.match(styles, /label: Content width \/ 正文宽度/u);
+	assert.match(
+		styles,
+		/label: Content width, content-aware \/ 正文宽度（按内容分配）/u,
+	);
+	assert.doesNotMatch(styles, /composer-enhanced-image-width-(?:default|wide|max|pane)/u);
+	assert.doesNotMatch(styles, /composer-enhanced-table-width-(?:wide|max|pane)/u);
+});
+
+void test("offers a viewport image height limit", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/id: composer-enhanced-image-max-height[\s\S]*?type: variable-number-slider[\s\S]*?default: 80[\s\S]*?format: vh/u,
+	);
+	assert.match(styles, /--composer-enhanced-image-max-height: 80vh;/u);
 });
 
 void test("offers Composer and One Dark Pro code block themes", () => {
@@ -142,16 +200,92 @@ void test("scopes block image and table alignment to the plugin", () => {
 
 	assert.match(
 		styles,
-		/body\.composer-enhanced \.markdown-rendered p:has\([^\n]+\.image-embed/u,
+		/body\.composer-enhanced \.markdown-rendered p\.composer-enhanced-block-image/u,
 	);
 	assert.match(
 		styles,
-		/body\.composer-enhanced[\s\S]*?\.markdown-source-view\.mod-cm6[\s\S]*?\.cm-embed-block/u,
+		/body\.composer-enhanced[\s\S]*?\.composer-enhanced-block-image-carrier/u,
 	);
 	assert.match(
 		styles,
-		/body\.composer-enhanced \.markdown-rendered table,[\s\S]*?\.cm-table-widget table/u,
+		/body\.composer-enhanced \.markdown-rendered table,[\s\S]*?\.markdown-source-view\.mod-cm6\.is-live-preview[\s\S]*?\.cm-table-widget[\s\S]*?table/u,
 	);
+});
+
+void test("keeps table width modes inside the normal content width", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.doesNotMatch(styles, /--composer-enhanced-content-width:/u);
+	assert.doesNotMatch(
+		styles,
+		/composer-enhanced-table-width-(?:full|content)[\s\S]*?\.markdown-preview-sizer\s*\{/u,
+	);
+	assert.doesNotMatch(
+		styles,
+		/composer-enhanced-table-width-(?:full|content)[\s\S]*?\.cm-sizer\s*[,{]/u,
+	);
+});
+
+void test("sizes only automatic block images and preserves explicit dimensions", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(styles, /--composer-enhanced-image-width: 100%;/u);
+	assert.match(
+		styles,
+		/\.composer-enhanced-automatic-block-image\s*\{[\s\S]*?min-width: 0;[\s\S]*?width: fit-content !important;[\s\S]*?max-width: var\(--composer-enhanced-image-width\) !important;/u,
+	);
+	assert.match(
+		styles,
+		/\.composer-enhanced-automatic-block-image[\s\S]*?img\s*\{[\s\S]*?width: auto !important;[\s\S]*?height: auto !important;[\s\S]*?max-width: 100% !important;[\s\S]*?max-height: var\(--composer-enhanced-image-max-height\) !important;/u,
+	);
+	assert.match(
+		styles,
+		/img\.composer-enhanced-automatic-block-image\s*\{[\s\S]*?max-width: var\(--composer-enhanced-image-width\) !important;[\s\S]*?max-height: var\(--composer-enhanced-image-max-height\) !important;/u,
+	);
+	assert.doesNotMatch(styles, /\[style\*="(?:width|height)"\]/u);
+	assert.doesNotMatch(styles, /img\s*\{[^}]*(?:^|[;{]\s*)width: 100%/gmu);
+	assert.doesNotMatch(styles, /composer-enhanced-image-width-(?:default|wide|max|pane)/u);
+});
+
+void test("keeps generic image content inside automatic carrier limits", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/\.composer-enhanced-automatic-block-image:not\(img\)\s*\{[\s\S]*?display: inline-flex !important;[\s\S]*?flex-direction: column;/u,
+	);
+	assert.match(
+		styles,
+		/\.composer-enhanced-automatic-block-image[\s\S]*?> \*\s*\{[\s\S]*?min-width: 0;[\s\S]*?max-width: 100% !important;[\s\S]*?overflow-wrap: anywhere;/u,
+	);
+	assert.doesNotMatch(styles, /captions-/u);
+	assert.doesNotMatch(styles, /\.image-wrapper/u);
+});
+
+void test("supports natural, fixed content-width, and content-aware tables", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer-enhanced-table-width-default\s*\{[\s\S]*?--composer-enhanced-table-container-width: fit-content;[\s\S]*?--composer-enhanced-table-content-width: auto;[\s\S]*?--composer-enhanced-table-wrapper-width: fit-content;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer-enhanced-table-width-full\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-wrapper-width: 100%;[\s\S]*?--composer-enhanced-table-layout: fixed;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer-enhanced-table-width-content\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-wrapper-width: 100%;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
+	);
+	assert.match(
+		styles,
+		/\.cm-contentContainer[\s\S]*?> \.cm-content[\s\S]*?> \.cm-table-widget,[\s\S]*?width: var\(--composer-enhanced-table-container-width\) !important;[\s\S]*?max-width: 100% !important;[\s\S]*?overflow-x: auto;/u,
+	);
+	assert.match(
+		styles,
+		/\.markdown-rendered table,[\s\S]*?\.markdown-source-view\.mod-cm6\.is-live-preview[\s\S]*?\.cm-table-widget[\s\S]*?table,[\s\S]*?\.cm-html-embed[\s\S]*?table[\s\S]*?width: var\(--composer-enhanced-table-content-width\) !important;[\s\S]*?max-width: none;[\s\S]*?table-layout: var\(--composer-enhanced-table-layout\);/u,
+	);
+	assert.doesNotMatch(styles, /--composer-enhanced-table-width:/u);
 });
 
 void test("converts Composer 0.7.0 callout triplets into CSS colors", () => {
