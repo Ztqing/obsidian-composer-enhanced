@@ -22,6 +22,25 @@ settings:
     description.zh: 使用 Composer 0.7.0 时保持开启以恢复 Callout 颜色。Composer 上游修复问题后可将其关闭。
     type: class-toggle
     default: true
+  - id: composer-enhanced-code-appearance
+    title: Code appearance
+    title.zh: 代码外观
+    type: heading
+    level: 2
+    collapsed: false
+  - id: composer-enhanced-code-theme
+    title: Code block theme
+    title.zh: 代码块主题
+    description: Apply one code palette consistently in Reading view, Live Preview, and Source mode. Inline code keeps Composer's existing colors.
+    description.zh: 在阅读视图、实时预览和源码模式中统一应用代码配色。内联代码保留 Composer 的现有颜色。
+    type: class-select
+    allowEmpty: false
+    default: composer-enhanced-code-theme-composer
+    options:
+      - label: Composer (Default) / Composer（默认）
+        value: composer-enhanced-code-theme-composer
+      - label: One Dark Pro
+        value: composer-enhanced-code-theme-one-dark-pro
   - id: composer-enhanced-content-alignment
     title: Content alignment
     title.zh: 内容对齐
@@ -138,6 +157,189 @@ body.composer-enhanced.composer--NiScheme-dark.theme-dark.composer-enhanced-enab
 	--callout-todo: rgb(200, 140, 155);
 	--callout-warning: rgb(203, 166, 88);
 	--callout-quote: rgb(150, 150, 150);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
+	--composer-enhanced-code-background: #282c34;
+	--composer-enhanced-code-normal: #abb2bf;
+	--composer-enhanced-code-comment: #7f848e;
+	--composer-enhanced-code-function: #61afef;
+	--composer-enhanced-code-important: #e06c75;
+	--composer-enhanced-code-keyword: #c678dd;
+	--composer-enhanced-code-operator: #56b6c2;
+	--composer-enhanced-code-property: #e06c75;
+	--composer-enhanced-code-punctuation: #abb2bf;
+	--composer-enhanced-code-string: #98c379;
+	--composer-enhanced-code-tag: #e06c75;
+	--composer-enhanced-code-value: #d19a66;
+	--composer-enhanced-code-bracket-background: #515a6b;
+	--composer-enhanced-code-caret: #528bff;
+	--composer-enhanced-code-type: #e5c07b;
+	--composer-enhanced-code-attribute: #d19a66;
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.cm-line.HyperMD-codeblock {
+	--code-background: var(--composer-enhanced-code-background);
+	--code-normal: var(--composer-enhanced-code-normal);
+	--code-comment: var(--composer-enhanced-code-comment);
+	--code-function: var(--composer-enhanced-code-function);
+	--code-important: var(--composer-enhanced-code-important);
+	--code-keyword: var(--composer-enhanced-code-keyword);
+	--code-operator: var(--composer-enhanced-code-operator);
+	--code-property: var(--composer-enhanced-code-property);
+	--code-punctuation: var(--composer-enhanced-code-punctuation);
+	--code-string: var(--composer-enhanced-code-string);
+	--code-tag: var(--composer-enhanced-code-tag);
+	--code-value: var(--composer-enhanced-code-value);
+	--code-bracket-background: var(
+		--composer-enhanced-code-bracket-background
+	);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre[class*="language-"] {
+	background-color: var(--composer-enhanced-code-background);
+	caret-color: var(--composer-enhanced-code-caret);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre
+	> code {
+	color: var(--composer-enhanced-code-normal);
+	background-color: transparent;
+	line-height: 1.5;
+	letter-spacing: initial;
+	word-spacing: initial;
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-variable {
+	color: var(--composer-enhanced-code-property);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	:is(
+		.composer-enhanced-code-token-function,
+		.composer-enhanced-code-token-property
+	) {
+	color: var(--composer-enhanced-code-function);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-keyword {
+	color: var(--composer-enhanced-code-keyword);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-type {
+	color: var(--composer-enhanced-code-type);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.composer-enhanced-code-token-value {
+	color: var(--composer-enhanced-code-value);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6.is-live-preview
+	div.HyperMD-codeblock-bg,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6:not(.is-live-preview)
+	div.HyperMD-codeblock-bg {
+	background-color: var(--composer-enhanced-code-background);
+	caret-color: var(--composer-enhanced-code-caret);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6.is-live-preview
+	.cm-line.HyperMD-codeblock,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6:not(.is-live-preview)
+	.cm-line.HyperMD-codeblock {
+	color: var(--composer-enhanced-code-normal);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre
+	.token.class-name,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.HyperMD-codeblock
+	.cm-type {
+	color: var(--composer-enhanced-code-type);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre
+	.token.attr-name,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.HyperMD-codeblock
+	.cm-attribute {
+	color: var(--composer-enhanced-code-attribute);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.HyperMD-codeblock
+	.cm-def {
+	color: var(--composer-enhanced-code-function);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	pre
+	:is(.token.comment, .token.prolog, .token.doctype, .token.cdata),
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.HyperMD-codeblock
+	.cm-comment {
+	font-style: italic;
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	button.copy-code-button,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.code-block-flair {
+	color: var(--composer-enhanced-code-comment);
+}
+
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-reading-view
+	.markdown-preview-view
+	button.copy-code-button:hover,
+body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
+	.markdown-source-view.mod-cm6
+	.code-block-flair:hover {
+	color: var(--composer-enhanced-code-normal);
+	background-color: var(--composer-enhanced-code-bracket-background);
 }
 
 body.composer-enhanced.composer-enhanced-image-align-center {

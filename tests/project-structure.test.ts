@@ -40,6 +40,19 @@ void test("requests a documented Style Settings metadata refresh on load", () =>
 	);
 });
 
+void test("registers and cleans up Reading view code token normalization", () => {
+	const mainSource = readFileSync("src/main.ts", "utf8");
+	const readingCodeSource = readFileSync(
+		"src/features/reading-code-theme.ts",
+		"utf8",
+	);
+
+	assert.match(mainSource, /registerReadingCodeTheme\(this\);/u);
+	assert.match(mainSource, /cleanupReadingCodeTokens\(document\);/u);
+	assert.match(readingCodeSource, /new MutationObserverConstructor/u);
+	assert.match(readingCodeSource, /this\.observer\?\.disconnect\(\);/u);
+});
+
 function readJson<T>(path: string): T {
 	return JSON.parse(readFileSync(path, "utf8")) as T;
 }
