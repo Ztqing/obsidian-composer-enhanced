@@ -212,11 +212,9 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-background: #282c34;
 	--composer-enhanced-code-normal: #abb2bf;
 	--composer-enhanced-code-comment: #7f848e;
-	--composer-enhanced-code-function: #61afef;
 	--composer-enhanced-code-important: #e06c75;
 	--composer-enhanced-code-keyword: #c678dd;
 	--composer-enhanced-code-operator: #56b6c2;
-	--composer-enhanced-code-property: #e06c75;
 	--composer-enhanced-code-punctuation: #abb2bf;
 	--composer-enhanced-code-string: #98c379;
 	--composer-enhanced-code-tag: #e06c75;
@@ -225,7 +223,6 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-caret: #528bff;
 	--composer-enhanced-code-type: #e5c07b;
 	--composer-enhanced-code-attribute: #d19a66;
-	--composer-enhanced-code-variable: #e06c75;
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -238,11 +235,11 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	--code-background: var(--composer-enhanced-code-background);
 	--code-normal: var(--composer-enhanced-code-normal);
 	--code-comment: var(--composer-enhanced-code-comment);
-	--code-function: var(--composer-enhanced-code-function);
+	--code-function: var(--composer-enhanced-code-normal);
 	--code-important: var(--composer-enhanced-code-important);
 	--code-keyword: var(--composer-enhanced-code-keyword);
 	--code-operator: var(--composer-enhanced-code-operator);
-	--code-property: var(--composer-enhanced-code-property);
+	--code-property: var(--composer-enhanced-code-normal);
 	--code-punctuation: var(--composer-enhanced-code-punctuation);
 	--code-string: var(--composer-enhanced-code-string);
 	--code-tag: var(--composer-enhanced-code-tag);
@@ -375,7 +372,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 		.cm-def,
 		.cm-builtin
 	) {
-	color: var(--composer-enhanced-code-function);
+	color: var(--composer-enhanced-code-normal);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -387,7 +384,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 		.markdown-source-view.mod-cm6 .HyperMD-codeblock
 	)
 	:is(.token.property, .cm-property) {
-	color: var(--composer-enhanced-code-property);
+	color: var(--composer-enhanced-code-normal);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -405,7 +402,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 		.cm-variable-2,
 		.cm-variable-3
 	) {
-	color: var(--composer-enhanced-code-variable);
+	color: var(--composer-enhanced-code-normal);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -466,43 +463,6 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	)
 	:is(.token.deleted, .token.important, .cm-error, .cm-invalidchar) {
 	color: var(--composer-enhanced-code-important);
-}
-
-/* Reading view normalization only fills gaps left by Prism's token stream. */
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-variable {
-	color: var(--composer-enhanced-code-variable);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-function {
-	color: var(--composer-enhanced-code-function);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-property {
-	color: var(--composer-enhanced-code-property);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-keyword {
-	color: var(--composer-enhanced-code-keyword);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-type {
-	color: var(--composer-enhanced-code-type);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.composer-enhanced-code-token-value {
-	color: var(--composer-enhanced-code-value);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro

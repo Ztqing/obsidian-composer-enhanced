@@ -1,5 +1,5 @@
 import * as assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 
 interface PluginManifest {
@@ -40,17 +40,12 @@ void test("requests a documented Style Settings metadata refresh on load", () =>
 	);
 });
 
-void test("registers and cleans up Reading view code token normalization", () => {
+void test("keeps code theme rendering free of runtime token rewriting", () => {
 	const mainSource = readFileSync("src/main.ts", "utf8");
-	const readingCodeSource = readFileSync(
-		"src/features/reading-code-theme.ts",
-		"utf8",
-	);
 
-	assert.match(mainSource, /registerReadingCodeTheme\(this\);/u);
-	assert.match(mainSource, /cleanupReadingCodeTokens\(document\);/u);
-	assert.match(readingCodeSource, /new MutationObserverConstructor/u);
-	assert.match(readingCodeSource, /this\.observer\?\.disconnect\(\);/u);
+	assert.doesNotMatch(mainSource, /ReadingCode|CodeToken/u);
+	assert.equal(existsSync("src/features/reading-code-theme.ts"), false);
+	assert.equal(existsSync("src/features/code-token-classifier.ts"), false);
 });
 
 void test("registers and cleans up block image layout markers", () => {

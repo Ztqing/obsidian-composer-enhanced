@@ -129,13 +129,10 @@ void test("maps the One Dark Pro palette to Obsidian code semantics", () => {
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-background: #282c34;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-normal: #abb2bf;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-comment: #7f848e;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-function: #61afef;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-keyword: #c678dd;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-string: #98c379;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-property: #e06c75;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-value: #d19a66;/u);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-caret: #528bff;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-variable: #e06c75;/u);
 	assert.doesNotMatch(paletteRule[1] ?? "", /^\s*--code(?:block)?-/mu);
 	assert.match(
 		styles,
@@ -164,11 +161,7 @@ void test("applies One Dark Pro to all three Markdown views", () => {
 	);
 	assert.match(styles, /\.token\.class-name/u);
 	assert.match(styles, /\.HyperMD-codeblock[\s\S]*?\.cm-type/u);
-	assert.match(styles, /\.composer-enhanced-code-token-variable/u);
-	assert.match(styles, /\.composer-enhanced-code-token-function/u);
-	assert.match(styles, /\.composer-enhanced-code-token-property/u);
-	assert.match(styles, /\.composer-enhanced-code-token-keyword/u);
-	assert.match(styles, /\.composer-enhanced-code-token-type/u);
+	assert.doesNotMatch(styles, /\.composer-enhanced-code-token-/u);
 	assert.match(
 		styles,
 		/pre[\s\S]*?> code[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
@@ -178,9 +171,9 @@ void test("applies One Dark Pro to all three Markdown views", () => {
 	assertSemanticTokenMapping(styles, "operator", ".token.operator", ".cm-operator");
 	assertSemanticTokenMapping(styles, "string", ".token.string", ".cm-string");
 	assertSemanticTokenMapping(styles, "value", ".token.number", ".cm-number");
-	assertSemanticTokenMapping(styles, "function", ".token.function", ".cm-def");
-	assertSemanticTokenMapping(styles, "property", ".token.property", ".cm-property");
-	assertSemanticTokenMapping(styles, "variable", ".token.variable", ".cm-variable");
+	assertSemanticTokenMapping(styles, "normal", ".token.function", ".cm-def");
+	assertSemanticTokenMapping(styles, "normal", ".token.property", ".cm-property");
+	assertSemanticTokenMapping(styles, "normal", ".token.variable", ".cm-variable");
 	assertSemanticTokenMapping(styles, "type", ".token.class-name", ".cm-type");
 	assertSemanticTokenMapping(styles, "attribute", ".token.attr-name", ".cm-attribute");
 	assertSemanticTokenMapping(styles, "tag", ".token.tag", ".cm-tag");

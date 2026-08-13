@@ -21,7 +21,8 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 ### Fixes
 
 - Restore Composer callout colors on Obsidian 1.13 while preserving the theme's built-in callout styles and color schemes.
-- Align common One Dark Pro syntax categories and code spacing across Reading view, Live Preview, and Source mode.
+- Align stable One Dark Pro syntax categories across Reading view, Live Preview, and Source mode while keeping ambiguous identifiers readable with the normal code color.
+- Keep code block palette rendering lightweight when notes open or update.
 - Keep One Dark Pro limited to fenced code blocks so command palette highlights and HTML source retain Composer's colors.
 - Apply block image width and height limits even when Obsidian reports intrinsic image dimensions through inline custom properties.
 - Keep image width and height limits active when other plugins add or remove wrappers and figure captions inside the image carrier.
