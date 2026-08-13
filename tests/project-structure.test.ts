@@ -15,9 +15,10 @@ interface PackageMetadata {
 
 void test("manifest exposes a cross-platform Composer companion plugin", () => {
 	const manifest = readJson<PluginManifest>("manifest.json");
+	const packageMetadata = readJson<PackageMetadata>("package.json");
 
 	assert.equal(manifest.id, "composer-enhanced");
-	assert.equal(manifest.version, "0.0.1");
+	assert.equal(manifest.version, packageMetadata.version);
 	assert.equal(manifest.minAppVersion, "1.13.0");
 	assert.equal(manifest.isDesktopOnly, false);
 });

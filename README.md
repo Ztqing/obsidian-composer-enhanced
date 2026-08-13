@@ -8,11 +8,11 @@
 
 Composer Enhanced is designed as a separate extension layer for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It can host focused compatibility fixes, opt-in features such as image alignment, code presentation refinements, and other small visual improvements without modifying the installed theme files.
 
-The current `0.0.1` release provides:
+The current `0.0.2` release provides:
 
 - A compatibility fix that restores colored callouts with Composer `0.7.0` on Obsidian `1.13.x`, including Composer's built-in callout styles and color schemes.
 - Independent alignment controls for standalone images and tables in Reading view and Live Preview, percentage width and viewport-height limits for automatically sized block images, and three table width behaviors.
-- A code block theme selector with Composer's current appearance as the default and a lightweight One Dark Pro palette that keeps stable syntax categories consistent across Reading view, Live Preview, and Source mode.
+- A code block theme selector with Composer's current appearance as the default and a lightweight One Dark Pro palette that keeps stable syntax categories consistent across Reading view, Live Preview, and Source mode while leaving ambiguous identifiers in the normal code color.
 
 These enhancements are scoped to the plugin and do not copy, modify, or replace the installed Composer theme.
 

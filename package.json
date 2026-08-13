@@ -1,6 +1,6 @@
 {
 	"name": "composer-enhanced",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Enhance the Composer theme with focused fixes, optional features, and configurable styles.",
 	"main": "main.js",
 	"type": "module",
