@@ -146,44 +146,65 @@ void test("maps the One Dark Pro palette to Obsidian code semantics", () => {
 
 void test("applies One Dark Pro to all three Markdown views", () => {
 	const styles = readFileSync("styles.css", "utf8");
+	const codeThemeStyles = extractCodeThemeStyles(styles);
 
 	assert.match(
-		styles,
+		codeThemeStyles,
 		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-reading-view[\s\S]*?\.markdown-preview-view[\s\S]*?pre/u,
 	);
 	assert.match(
-		styles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6\.is-live-preview[\s\S]*?HyperMD-codeblock/u,
+		codeThemeStyles,
+		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6\s+[\s\S]*?HyperMD-codeblock/u,
 	);
-	assert.match(
-		styles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6:not\(\.is-live-preview\)[\s\S]*?HyperMD-codeblock/u,
+	assert.doesNotMatch(
+		codeThemeStyles,
+		/\.markdown-source-view\.mod-cm6(?:\.is-live-preview|:not\(\.is-live-preview\))/u,
 	);
-	assert.match(styles, /\.token\.class-name/u);
-	assert.match(styles, /\.HyperMD-codeblock[\s\S]*?\.cm-type/u);
-	assert.doesNotMatch(styles, /\.composer-enhanced-code-token-/u);
+	assert.match(codeThemeStyles, /\.token\.class-name/u);
+	assert.match(codeThemeStyles, /\.HyperMD-codeblock[\s\S]*?\.cm-type/u);
+	assert.doesNotMatch(codeThemeStyles, /\.composer-enhanced-code-token-/u);
 	assert.match(
-		styles,
+		codeThemeStyles,
 		/pre[\s\S]*?> code[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
 	);
-	assertSemanticTokenMapping(styles, "comment", ".token.comment", ".cm-comment");
-	assertSemanticTokenMapping(styles, "keyword", ".token.keyword", ".cm-keyword");
-	assertSemanticTokenMapping(styles, "operator", ".token.operator", ".cm-operator");
-	assertSemanticTokenMapping(styles, "string", ".token.string", ".cm-string");
-	assertSemanticTokenMapping(styles, "value", ".token.number", ".cm-number");
-	assertSemanticTokenMapping(styles, "normal", ".token.function", ".cm-def");
-	assertSemanticTokenMapping(styles, "normal", ".token.property", ".cm-property");
-	assertSemanticTokenMapping(styles, "normal", ".token.variable", ".cm-variable");
-	assertSemanticTokenMapping(styles, "type", ".token.class-name", ".cm-type");
-	assertSemanticTokenMapping(styles, "attribute", ".token.attr-name", ".cm-attribute");
-	assertSemanticTokenMapping(styles, "tag", ".token.tag", ".cm-tag");
+	assert.match(
+		codeThemeStyles,
+		/:where\([\s\S]*?pre[\s\S]*?> code\[class\*="language-"\],[\s\S]*?\.markdown-source-view\.mod-cm6 \.HyperMD-codeblock[\s\S]*?\)/u,
+	);
+	assert.doesNotMatch(codeThemeStyles, /\.cm-inline-code/u);
+	assertSemanticTokenMapping(codeThemeStyles, "comment", ".token.comment", ".cm-comment");
+	assertSemanticTokenMapping(codeThemeStyles, "keyword", ".token.keyword", ".cm-keyword");
+	assertSemanticTokenMapping(codeThemeStyles, "operator", ".token.operator", ".cm-operator");
+	assertSemanticTokenMapping(codeThemeStyles, "string", ".token.string", ".cm-string");
+	assertSemanticTokenMapping(codeThemeStyles, "value", ".token.number", ".cm-number");
+	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.function", ".cm-def");
+	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.property", ".cm-property");
+	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.variable", ".cm-variable");
+	assertSemanticTokenMapping(codeThemeStyles, "type", ".token.class-name", ".cm-type");
+	assertSemanticTokenMapping(codeThemeStyles, "attribute", ".token.attr-name", ".cm-attribute");
+	assertSemanticTokenMapping(codeThemeStyles, "tag", ".token.tag", ".cm-tag");
 	assertSemanticTokenMapping(
-		styles,
+		codeThemeStyles,
 		"punctuation",
 		".token.punctuation",
 		".cm-punctuation",
 	);
 });
+
+function extractCodeThemeStyles(styles: string): string {
+	const start = styles.indexOf(
+		"body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro",
+	);
+	const end = styles.indexOf(
+		"body.composer-enhanced.composer-enhanced-image-align-center",
+		start,
+	);
+
+	assert.notEqual(start, -1);
+	assert.notEqual(end, -1);
+
+	return styles.slice(start, end);
+}
 
 function assertSemanticTokenMapping(
 	styles: string,

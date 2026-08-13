@@ -208,6 +208,7 @@ body.composer-enhanced.composer--NiScheme-dark.theme-dark.composer-enhanced-enab
 	--callout-quote: rgb(150, 150, 150);
 }
 
+/* One Dark Pro palette */
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-background: #282c34;
 	--composer-enhanced-code-normal: #abb2bf;
@@ -225,6 +226,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-attribute: #d19a66;
 }
 
+/* Keep Obsidian's code variables local to fenced code block hosts. */
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.markdown-reading-view
 	.markdown-preview-view
@@ -252,11 +254,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.markdown-reading-view
 	.markdown-preview-view
-	pre,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-reading-view
-	.markdown-preview-view
-	pre[class*="language-"] {
+	pre {
 	background-color: var(--composer-enhanced-code-background);
 	caret-color: var(--composer-enhanced-code-caret);
 }
@@ -273,6 +271,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	word-spacing: initial;
 }
 
+/* Map Prism and CodeMirror tokens to the same stable semantic palette. */
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	:where(
 		.markdown-reading-view
@@ -369,35 +368,12 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 		.token.function,
 		.token.function-variable,
 		.token.builtin,
-		.cm-def,
-		.cm-builtin
-	) {
-	color: var(--composer-enhanced-code-normal);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	:where(
-		.markdown-reading-view
-			.markdown-preview-view
-			pre
-			> code[class*="language-"],
-		.markdown-source-view.mod-cm6 .HyperMD-codeblock
-	)
-	:is(.token.property, .cm-property) {
-	color: var(--composer-enhanced-code-normal);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	:where(
-		.markdown-reading-view
-			.markdown-preview-view
-			pre
-			> code[class*="language-"],
-		.markdown-source-view.mod-cm6 .HyperMD-codeblock
-	)
-	:is(
+		.token.property,
 		.token.variable,
 		.token.parameter,
+		.cm-def,
+		.cm-builtin,
+		.cm-property,
 		.cm-variable,
 		.cm-variable-2,
 		.cm-variable-3
@@ -466,24 +442,19 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6.is-live-preview
-	div.HyperMD-codeblock-bg,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6:not(.is-live-preview)
+	.markdown-source-view.mod-cm6
 	div.HyperMD-codeblock-bg {
 	background-color: var(--composer-enhanced-code-background);
 	caret-color: var(--composer-enhanced-code-caret);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6.is-live-preview
-	.cm-line.HyperMD-codeblock,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6:not(.is-live-preview)
+	.markdown-source-view.mod-cm6
 	.cm-line.HyperMD-codeblock {
 	color: var(--composer-enhanced-code-normal);
 }
 
+/* Code block controls */
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.markdown-reading-view
 	.markdown-preview-view
