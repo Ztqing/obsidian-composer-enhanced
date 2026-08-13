@@ -318,15 +318,15 @@ void test("supports natural, fixed content-width, and content-aware tables", () 
 
 	assert.match(
 		styles,
-		/body\.composer-enhanced\.composer-enhanced-table-width-default\s*\{[\s\S]*?--composer-enhanced-table-container-width: fit-content;[\s\S]*?--composer-enhanced-table-content-width: auto;[\s\S]*?--composer-enhanced-table-wrapper-width: fit-content;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
+		/body\.composer-enhanced\s*\{[\s\S]*?--composer-enhanced-table-container-width: fit-content;[\s\S]*?--composer-enhanced-table-content-width: auto;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
 	);
 	assert.match(
 		styles,
-		/body\.composer-enhanced\.composer-enhanced-table-width-full\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-wrapper-width: 100%;[\s\S]*?--composer-enhanced-table-layout: fixed;/u,
+		/body\.composer-enhanced\.composer-enhanced-table-width-full\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-layout: fixed;/u,
 	);
 	assert.match(
 		styles,
-		/body\.composer-enhanced\.composer-enhanced-table-width-content\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-wrapper-width: 100%;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
+		/body\.composer-enhanced\.composer-enhanced-table-width-content\s*\{[\s\S]*?--composer-enhanced-table-container-width: 100%;[\s\S]*?--composer-enhanced-table-content-width: 100%;[\s\S]*?--composer-enhanced-table-layout: auto;/u,
 	);
 	assert.match(
 		styles,
@@ -337,6 +337,8 @@ void test("supports natural, fixed content-width, and content-aware tables", () 
 		/\.markdown-rendered table,[\s\S]*?\.markdown-source-view\.mod-cm6\.is-live-preview[\s\S]*?\.cm-table-widget[\s\S]*?table,[\s\S]*?\.cm-html-embed[\s\S]*?table[\s\S]*?width: var\(--composer-enhanced-table-content-width\) !important;[\s\S]*?max-width: none;[\s\S]*?table-layout: var\(--composer-enhanced-table-layout\);/u,
 	);
 	assert.doesNotMatch(styles, /--composer-enhanced-table-width:/u);
+	assert.doesNotMatch(styles, /--composer-enhanced-table-wrapper-width:/u);
+	assert.doesNotMatch(styles, /\.cm-html-embed\s*\{[^}]*overflow-x: auto/u);
 });
 
 void test("converts Composer 0.7.0 callout triplets into CSS colors", () => {

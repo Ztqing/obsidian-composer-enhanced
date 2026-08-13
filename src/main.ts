@@ -1,9 +1,6 @@
 import { Plugin } from "obsidian";
 
-import {
-	cleanupBlockImageLayout,
-	registerBlockImageLayout,
-} from "./features/block-image-layout";
+import { registerBlockImageLayout } from "./features/block-image-layout";
 import { disableThemeScope, enableThemeScope } from "./theme-scope";
 
 export default class ComposerEnhancedPlugin extends Plugin {
@@ -15,7 +12,6 @@ export default class ComposerEnhancedPlugin extends Plugin {
 	}
 
 	onunload(): void {
-		cleanupBlockImageLayout(document);
 		disableThemeScope(document.body);
 	}
 }

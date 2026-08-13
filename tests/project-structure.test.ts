@@ -58,9 +58,13 @@ void test("registers and cleans up block image layout markers", () => {
 		"src/features/block-image-layout-state.ts",
 		"utf8",
 	);
+	const blockImageObserverSource = readFileSync(
+		"src/features/block-image-layout-observer.ts",
+		"utf8",
+	);
 
 	assert.match(mainSource, /registerBlockImageLayout\(this\);/u);
-	assert.match(mainSource, /cleanupBlockImageLayout\(document\);/u);
+	assert.match(blockImageSource, /plugin\.register\(\(\) => cleanupBlockImageLayout\(document\)\);/u);
 	assert.match(
 		blockImageStateSource,
 		/export const BLOCK_IMAGE_CLASS = "composer-enhanced-block-image";/u,
@@ -86,23 +90,14 @@ void test("registers and cleans up block image layout markers", () => {
 		blockImageStateSource,
 		/element\.classList\.remove\([\s\S]*?BLOCK_IMAGE_CLASS,[\s\S]*?BLOCK_IMAGE_CARRIER_CLASS,[\s\S]*?AUTOMATIC_BLOCK_IMAGE_CLASS/u,
 	);
-	assert.match(
-		blockImageSource,
-		/attributeFilter: \["class", "style", "width", "height"\]/u,
-	);
-	assert.match(
-		blockImageSource,
-		/const MARKDOWN_VIEW_SELECTOR = "\.markdown-source-view\.mod-cm6";/u,
-	);
+	assert.match(blockImageSource, /plugin\.registerEditorExtension\(/u);
+	assert.match(blockImageSource, /ViewPlugin\.define\(/u);
 	assert.doesNotMatch(blockImageSource, /captions-/u);
 	assert.doesNotMatch(blockImageStateSource, /captions-/u);
-	assert.match(blockImageSource, /mutations\.some\(mutationAffectsBlockImageLayout\)/u);
-	assert.match(
-		blockImageSource,
-		/view\.classList\.contains\("is-live-preview"\)/u,
-	);
-	assert.match(blockImageSource, /observer\.disconnect\(\);/u);
-	assert.match(blockImageSource, /cleanupBlockImageLayout\(view\);/u);
+	assert.match(blockImageObserverSource, /collectAffectedImageLayoutBlocks\(/u);
+	assert.match(blockImageObserverSource, /pendingBlocks/u);
+	assert.match(blockImageSource, /observer\?\.destroy\(\);/u);
+	assert.match(blockImageObserverSource, /observer\?\.disconnect\(\);/u);
 });
 
 function readJson<T>(path: string): T {

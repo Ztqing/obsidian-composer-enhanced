@@ -26,3 +26,5 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 - Keep One Dark Pro limited to fenced code blocks so command palette highlights and HTML source retain Composer's colors.
 - Apply block image width and height limits even when Obsidian reports intrinsic image dimensions through inline custom properties.
 - Keep image width and height limits active when other plugins add or remove wrappers and figure captions inside the image carrier.
+- Keep standalone-image layout classification current when nearby content, wrappers, or captions change.
+- Avoid nested horizontal scroll areas around oversized tables on narrow screens.

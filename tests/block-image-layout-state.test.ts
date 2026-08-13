@@ -8,8 +8,10 @@ import {
 	BLOCK_IMAGE_CARRIER_CLASS,
 	BLOCK_IMAGE_CLASS,
 	cleanupBlockImageLayout,
+	collectAffectedImageLayoutBlocks,
 	mutationAffectsBlockImageLayout,
 	refreshBlockImageLayout,
+	refreshReadingBlockImageLayout,
 } from "../src/features/block-image-layout-state";
 
 void test("marks standalone image carriers without taking over inline or explicit sizes", () => {
@@ -100,7 +102,7 @@ void test("filters mutations by image layout relevance", () => {
 
 	assert.equal(
 		mutationAffectsBlockImageLayout(childListMutation(carrier, caption)),
-		false,
+		true,
 	);
 	assert.equal(
 		mutationAffectsBlockImageLayout(childListMutation(carrier, wrapper)),
@@ -108,12 +110,56 @@ void test("filters mutations by image layout relevance", () => {
 	);
 	assert.equal(
 		mutationAffectsBlockImageLayout(attributeMutation(carrier, "class")),
-		false,
+		true,
 	);
 	assert.equal(
 		mutationAffectsBlockImageLayout(attributeMutation(carrier, "width")),
 		true,
 	);
+});
+
+void test("returns only the blocks touched by a mutation", () => {
+	const { document } = createFixture();
+	const firstBlock = requireElement(document, "#wiki-block");
+	const secondBlock = requireElement(document, "#direct-block");
+	const text = document.createTextNode("caption");
+	firstBlock.appendChild(text);
+
+	const blocks = collectAffectedImageLayoutBlocks(
+		childListMutation(firstBlock, text),
+		"reading",
+	);
+
+	assert.deepEqual(blocks, [firstBlock]);
+	assert.equal(blocks.includes(secondBlock), false);
+});
+
+void test("reclassifies a block when meaningful text is added or removed", () => {
+	const { document } = createFixture();
+	const block = requireElement(document, "#wiki-block");
+	const carrier = requireElement(document, "#wiki-carrier");
+	refreshBlockImageLayout(document);
+
+	const text = document.createTextNode("description");
+	block.appendChild(text);
+	refreshReadingBlockImageLayout(block);
+	assert.equal(block.classList.contains(BLOCK_IMAGE_CLASS), false);
+
+	text.remove();
+	refreshReadingBlockImageLayout(block);
+	assert.equal(block.classList.contains(BLOCK_IMAGE_CLASS), true);
+	assert.equal(carrier.classList.contains(BLOCK_IMAGE_CARRIER_CLASS), true);
+});
+
+void test("does not treat empty ordinary elements as editor decorations", () => {
+	const { document } = createFixture();
+	const block = requireElement(document, "#live-block");
+	const emptyElement = document.createElement("span");
+	block.insertBefore(emptyElement, block.firstChild);
+
+	refreshBlockImageLayout(document);
+
+	assert.equal(block.classList.contains(BLOCK_IMAGE_CLASS), false);
 });
 
 void test("removes only Composer Enhanced image markers", () => {

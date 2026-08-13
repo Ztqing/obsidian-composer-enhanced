@@ -132,7 +132,6 @@ body.composer-enhanced {
 	--composer-enhanced-table-margin-end: auto;
 	--composer-enhanced-table-container-width: fit-content;
 	--composer-enhanced-table-content-width: auto;
-	--composer-enhanced-table-wrapper-width: fit-content;
 	--composer-enhanced-table-layout: auto;
 }
 
@@ -509,24 +508,15 @@ body.composer-enhanced.composer-enhanced-table-align-right {
 	--composer-enhanced-table-margin-end: 0;
 }
 
-body.composer-enhanced.composer-enhanced-table-width-default {
-	--composer-enhanced-table-container-width: fit-content;
-	--composer-enhanced-table-content-width: auto;
-	--composer-enhanced-table-wrapper-width: fit-content;
-	--composer-enhanced-table-layout: auto;
-}
-
 body.composer-enhanced.composer-enhanced-table-width-full {
 	--composer-enhanced-table-container-width: 100%;
 	--composer-enhanced-table-content-width: 100%;
-	--composer-enhanced-table-wrapper-width: 100%;
 	--composer-enhanced-table-layout: fixed;
 }
 
 body.composer-enhanced.composer-enhanced-table-width-content {
 	--composer-enhanced-table-container-width: 100%;
 	--composer-enhanced-table-content-width: 100%;
-	--composer-enhanced-table-wrapper-width: 100%;
 	--composer-enhanced-table-layout: auto;
 }
 
@@ -586,11 +576,18 @@ body.composer-enhanced
 
 body.composer-enhanced
 	.markdown-preview-sizer
-	> :is(.el-table, .table-wrapper, .el-div):has(table),
+	> :is(.el-table, .table-wrapper):has(table),
+body.composer-enhanced
+	.markdown-preview-sizer
+	> .el-div:has(> table, > .table-wrapper > table),
 body.composer-enhanced
 	.markdown-preview-sizer
 	> .markdown-preview-section
-	> :is(.el-table, .table-wrapper, .el-div):has(table),
+	> :is(.el-table, .table-wrapper):has(table),
+body.composer-enhanced
+	.markdown-preview-sizer
+	> .markdown-preview-section
+	> .el-div:has(> table, > .table-wrapper > table),
 body.composer-enhanced
 	.markdown-source-view.mod-cm6.is-live-preview
 	.cm-contentContainer
@@ -620,9 +617,8 @@ body.composer-enhanced
 	.markdown-source-view.mod-cm6.is-live-preview
 	.cm-line:has(.cm-html-embed table)
 	.cm-html-embed {
-	width: var(--composer-enhanced-table-wrapper-width);
+	width: var(--composer-enhanced-table-container-width);
 	max-width: 100%;
-	overflow-x: auto;
 }
 
 body.composer-enhanced .markdown-rendered table,

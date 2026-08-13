@@ -7,6 +7,10 @@ export const AUTOMATIC_BLOCK_IMAGE_CLASS =
 const ELEMENT_NODE = 1;
 const TEXT_NODE = 3;
 const IMAGE_SIZING_SELECTOR = "img, .image-embed, .cm-embed-block";
+const READING_BLOCK_SELECTOR = "p";
+const LIVE_PREVIEW_BLOCK_SELECTOR = ".cm-line";
+const LIVE_PREVIEW_CANDIDATE_SELECTOR =
+	".markdown-source-view.mod-cm6.is-live-preview .cm-line";
 const MARKED_IMAGE_SELECTOR = [
 	`.${BLOCK_IMAGE_CARRIER_CLASS}`,
 	`.${AUTOMATIC_BLOCK_IMAGE_CLASS}`,
@@ -34,12 +38,48 @@ export function refreshReadingBlockImageLayout(root: ParentNode): void {
 	refreshCandidates(root, "p", findReadingImageCarrier);
 }
 
+export function refreshReadingImageLayoutBlock(paragraph: HTMLElement): void {
+	if (paragraph.matches("p")) {
+		refreshCandidate(paragraph, findReadingImageCarrier);
+	}
+}
+
 export function refreshLivePreviewBlockImageLayout(root: ParentNode): void {
 	refreshCandidates(
 		root,
-		".markdown-source-view.mod-cm6.is-live-preview .cm-line",
+		LIVE_PREVIEW_CANDIDATE_SELECTOR,
 		findLivePreviewImageCarrier,
 	);
+}
+
+export function refreshLivePreviewImageLayoutBlock(line: HTMLElement): void {
+	if (
+		line.matches(LIVE_PREVIEW_BLOCK_SELECTOR) &&
+		line.closest(".markdown-source-view.mod-cm6.is-live-preview")
+	) {
+		refreshCandidate(line, findLivePreviewImageCarrier);
+	}
+}
+
+export type ImageLayoutMode = "reading" | "live-preview";
+
+export function collectAffectedImageLayoutBlocks(
+	mutation: MutationRecord,
+	mode: ImageLayoutMode,
+): HTMLElement[] {
+	const selector =
+		mode === "reading" ? READING_BLOCK_SELECTOR : LIVE_PREVIEW_CANDIDATE_SELECTOR;
+	const blocks = new Set<HTMLElement>();
+
+	addAffectedBlock(mutation.target, selector, blocks, false);
+	for (const node of Array.from(mutation.addedNodes)) {
+		addAffectedBlock(node, selector, blocks, true);
+	}
+	for (const node of Array.from(mutation.removedNodes)) {
+		addAffectedBlock(node, selector, blocks, false);
+	}
+
+	return [...blocks];
 }
 
 export function mutationAffectsBlockImageLayout(
@@ -54,11 +94,17 @@ export function mutationAffectsBlockImageLayout(
 			return mutation.attributeName === "class";
 		}
 
+		const attributeName = mutation.attributeName ?? "";
 		return (
-			mutation.target.matches(IMAGE_SIZING_SELECTOR) &&
-			["style", "width", "height"].includes(
-				mutation.attributeName ?? "",
-			)
+			(attributeName === "class" &&
+				!onlyComposerEnhancedMarkersChanged(mutation) &&
+				Boolean(
+					mutation.target.closest(
+						`${READING_BLOCK_SELECTOR}, ${LIVE_PREVIEW_BLOCK_SELECTOR}`,
+					),
+				)) ||
+			(["style", "width", "height"].includes(attributeName) &&
+				mutation.target.matches(IMAGE_SIZING_SELECTOR))
 		);
 	}
 
@@ -67,11 +113,8 @@ export function mutationAffectsBlockImageLayout(
 		if (!isHTMLElement(parent)) {
 			return false;
 		}
-		return (
-			Boolean(mutation.target.textContent?.trim()) &&
-			parent.matches(
-				".markdown-rendered p, .markdown-source-view.mod-cm6.is-live-preview .cm-line",
-			)
+		return Boolean(
+			parent.closest(`${READING_BLOCK_SELECTOR}, ${LIVE_PREVIEW_BLOCK_SELECTOR}`),
 		);
 	}
 
@@ -79,19 +122,9 @@ export function mutationAffectsBlockImageLayout(
 		return false;
 	}
 
-	const changedNodes = [
-		...Array.from(mutation.addedNodes),
-		...Array.from(mutation.removedNodes),
-	];
 	return (
-		changedNodes.some(nodeContainsImageLayoutElement) ||
-		(isHTMLElement(mutation.target) &&
-			mutation.target.matches(
-				".markdown-rendered p, .markdown-source-view.mod-cm6.is-live-preview .cm-line",
-			) &&
-			changedNodes.some(
-				(node) => node.nodeType === TEXT_NODE && Boolean(node.textContent?.trim()),
-			))
+		collectAffectedImageLayoutBlocks(mutation, "reading").length > 0 ||
+		collectAffectedImageLayoutBlocks(mutation, "live-preview").length > 0
 	);
 }
 
@@ -101,28 +134,91 @@ function refreshCandidates(
 	findCarrier: (element: HTMLElement) => HTMLElement | null,
 ): void {
 	for (const element of collectElements(root, selector)) {
-		const carrier = findCarrier(element);
-		element.classList.toggle(BLOCK_IMAGE_CLASS, carrier !== null);
+		refreshCandidate(element, findCarrier);
+	}
+}
 
-		for (const previousCarrier of collectElements(element, MARKED_IMAGE_SELECTOR)) {
-			if (previousCarrier !== carrier) {
-				previousCarrier.classList.remove(
+function refreshCandidate(
+	element: HTMLElement,
+	findCarrier: (element: HTMLElement) => HTMLElement | null,
+): void {
+	const carrier = findCarrier(element);
+	element.classList.toggle(BLOCK_IMAGE_CLASS, carrier !== null);
+
+	for (const previousCarrier of collectElements(element, MARKED_IMAGE_SELECTOR)) {
+		if (previousCarrier !== carrier) {
+			previousCarrier.classList.remove(
+				BLOCK_IMAGE_CARRIER_CLASS,
+				AUTOMATIC_BLOCK_IMAGE_CLASS,
+			);
+		}
+	}
+
+	if (carrier === null) {
+		return;
+	}
+
+	carrier.classList.add(BLOCK_IMAGE_CARRIER_CLASS);
+	carrier.classList.toggle(
+		AUTOMATIC_BLOCK_IMAGE_CLASS,
+		isAutomaticallySizedImage(carrier),
+	);
+}
+
+function addAffectedBlock(
+	node: Node,
+	selector: string,
+	blocks: Set<HTMLElement>,
+	includeDescendants: boolean,
+): void {
+	if (!isHTMLElement(node)) {
+		if (node.nodeType === TEXT_NODE && node.parentElement) {
+			addAffectedBlock(node.parentElement, selector, blocks, false);
+		}
+		return;
+	}
+
+	const block = node.closest<HTMLElement>(selector);
+	if (block) {
+		blocks.add(block);
+	}
+
+	if (includeDescendants) {
+		for (const descendant of Array.from(
+			node.querySelectorAll<HTMLElement>(selector),
+		)) {
+			blocks.add(descendant);
+		}
+	}
+}
+
+function onlyComposerEnhancedMarkersChanged(mutation: MutationRecord): boolean {
+	if (!isHTMLElement(mutation.target)) {
+		return false;
+	}
+
+	const previousClasses = withoutComposerEnhancedMarkers(
+		(mutation.oldValue ?? "").split(/\s+/u),
+	);
+	const currentClasses = withoutComposerEnhancedMarkers(mutation.target.classList);
+	return (
+		previousClasses.size === currentClasses.size &&
+		[...previousClasses].every((className) => currentClasses.has(className))
+	);
+}
+
+function withoutComposerEnhancedMarkers(classes: ArrayLike<string>): Set<string> {
+	return new Set(
+		Array.from(classes).filter(
+			(className) =>
+				className &&
+				![
+					BLOCK_IMAGE_CLASS,
 					BLOCK_IMAGE_CARRIER_CLASS,
 					AUTOMATIC_BLOCK_IMAGE_CLASS,
-				);
-			}
-		}
-
-		if (carrier === null) {
-			continue;
-		}
-
-		carrier.classList.add(BLOCK_IMAGE_CARRIER_CLASS);
-		carrier.classList.toggle(
-			AUTOMATIC_BLOCK_IMAGE_CLASS,
-			isAutomaticallySizedImage(carrier),
-		);
-	}
+				].includes(className),
+		),
+	);
 }
 
 function collectElements(root: ParentNode, selector: string): HTMLElement[] {
@@ -225,21 +321,8 @@ function isEditorDecoration(node: ChildNode): boolean {
 		return false;
 	}
 
-	return (
-		!node.textContent?.trim() ||
-		node.matches(
-			".cm-widgetBuffer, [aria-hidden='true'], [contenteditable='false'], .cm-formatting, .cm-formatting-image",
-		)
-	);
-}
-
-function nodeContainsImageLayoutElement(node: Node): boolean {
-	return (
-		isHTMLElement(node) &&
-		(node.matches(`${IMAGE_SIZING_SELECTOR}, ${MARKED_IMAGE_SELECTOR}`) ||
-			Boolean(
-				node.querySelector(`${IMAGE_SIZING_SELECTOR}, ${MARKED_IMAGE_SELECTOR}`),
-			))
+	return node.matches(
+		".cm-widgetBuffer, [aria-hidden='true'], [contenteditable='false'], .cm-formatting, .cm-formatting-image",
 	);
 }
 
