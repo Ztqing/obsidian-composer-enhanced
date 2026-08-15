@@ -41,6 +41,19 @@ settings:
         value: composer-enhanced-code-theme-composer
       - label: One Dark Pro
         value: composer-enhanced-code-theme-one-dark-pro
+  - id: composer-enhanced-components-plugin
+    title: Components plugin
+    title.zh: Components 插件
+    type: heading
+    level: 2
+    collapsed: false
+  - id: composer-enhanced-hide-components-ai-empty-state-icon
+    title: Hide Components AI empty-state icon
+    title.zh: 隐藏 Components AI 空状态图标
+    description: Turn this on to hide the animated robot icon in Components AI's empty conversation view and stop its visual animation.
+    description.zh: 开启后将隐藏 Components AI 空会话视图中的机器人动画图标，并停止其视觉动画。
+    type: class-toggle
+    default: false
   - id: composer-enhanced-image-layout
     title: Images
     title.zh: 图片
@@ -133,6 +146,11 @@ body.composer-enhanced {
 	--composer-enhanced-table-container-width: fit-content;
 	--composer-enhanced-table-content-width: auto;
 	--composer-enhanced-table-layout: auto;
+}
+
+body.composer-enhanced.composer-enhanced-hide-components-ai-empty-state-icon
+	.components--ChatConversationEmptyStateIconHost {
+	display: none !important;
 }
 
 /* Style Settings owns the positive class when present; otherwise the fix defaults on. */

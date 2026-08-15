@@ -120,6 +120,28 @@ void test("offers Composer and One Dark Pro code block themes", () => {
 	assert.match(styles, /value: composer-enhanced-code-theme-one-dark-pro/u);
 });
 
+void test("offers an opt-in Components AI empty-state icon hiding toggle", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/id: composer-enhanced-components-plugin[\s\S]*?title: Components plugin[\s\S]*?title\.zh: Components 插件[\s\S]*?type: heading[\s\S]*?level: 2/u,
+	);
+	assert.match(
+		styles,
+		/id: composer-enhanced-hide-components-ai-empty-state-icon[\s\S]*?title: Hide Components AI empty-state icon[\s\S]*?title\.zh: 隐藏 Components AI 空状态图标[\s\S]*?type: class-toggle[\s\S]*?default: false/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer-enhanced-hide-components-ai-empty-state-icon\s*\.components--ChatConversationEmptyStateIconHost\s*\{[\s\S]*?display: none !important;/u,
+	);
+	assert.doesNotMatch(styles, /composer-enhanced-show-components-ai-empty-state-icon/u);
+	assert.doesNotMatch(
+		styles,
+		/\.components--ChatConversationEmptyState\s*\{[^}]*display: none/gu,
+	);
+});
+
 void test("maps the One Dark Pro palette to Obsidian code semantics", () => {
 	const styles = readFileSync("styles.css", "utf8");
 	const paletteRule = styles.match(
