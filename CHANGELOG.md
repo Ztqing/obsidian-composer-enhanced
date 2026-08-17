@@ -2,6 +2,13 @@
 
 All notable user-facing changes to Composer Enhanced are documented here. This English changelog is the canonical source for GitHub Release notes.
 
+## 0.1.1
+
+### Fixes
+
+- Preserve Composer's academic three-line table borders when exporting notes to PDF.
+- Preserve Composer's academic three-line table borders in Components AI conversations.
+
 ## 0.1.0
 
 ### New Features

@@ -11,6 +11,7 @@ Composer Enhanced 是为 [Composer 主题](https://github.com/vran-dev/obsidian-
 Composer Enhanced 当前提供：
 
 - 修复 Composer `0.7.0` 在 Obsidian `1.13.x` 中 Callout 颜色丢失的问题，覆盖 Composer 内置的 Callout 样式和配色方案。
+- 修复 Composer `0.7.0` 学术三线表在 PDF 导出和 Components AI 会话中边框显示不完整的问题。
 - 分别控制阅读视图和实时预览中独占一行的图片与表格对齐方式，为自动调整尺寸的块级图片提供百分比宽度和视口限高，并提供三种表格宽度行为。
 - 提供代码块主题选择；默认保留 Composer 当前外观，也可使用轻量的 One Dark Pro 配色，在阅读视图、实时预览和源码模式中统一稳定的语法类别，同时让有歧义的标识符保持普通代码文本色。
 - 可选择隐藏 Components AI 的空会话动画图标，而不关闭 AI Chat。
@@ -35,11 +36,13 @@ Style Settings 是可选依赖。未安装时，代码块保留 Composer 外观�
 
 Composer Enhanced 当前面向 Composer `0.7.0`，并以 Obsidian `1.13.0` 作为兼容性基线。插件结构同时考虑桌面端和移动端，不使用 Electron、Node.js 或其他桌面专用运行时 API。
 
+学术三线表兼容修复只在 Composer 已选择**三线表（学术）**样式时生效。它会恢复 Obsidian PDF 导出和 Components AI 会话中的表头分隔线与底线颜色，不会改变 Composer 的其他表格样式或其他 Markdown 渲染器。
+
 图片对齐、宽度和最大高度只作用于独占一行的块级图片，行内图片仍保留在正文排版流中。所选图片宽度是最大值，图片会保持原始纵横比，因此当原始尺寸较小或先触发限高时，实际宽度可以更窄；笔记中已有的显式图片尺寸仍然有效，并跳过自动尺寸控制。当编辑器或其他本地插件添加或删除相邻内容、包装或题注时，图片分类会及时更新，尺寸限制仍会附着在稳定的布局载体上。这套通用处理已使用 [Captions](https://github.com/Ztqing/obsidian-captions) 验证，但 Composer Enhanced 不依赖其类名或内部 API。两种正文宽度表格模式都会与普通段落左右边缘对齐，而不会占满整个 Markdown 窗格：固定模式让各列均分可用宽度，按内容分配模式使用浏览器的自动表格布局，让需要空间的列获得更大比例。表格内容过宽时在窄屏下使用一个独立的横向滚动区域。
 
 所选代码块配色会同时应用于阅读视图、实时预览和源码模式。注释、关键字、运算符、字符串、值、类型、特性、标签和标点等稳定语法类别会在 Obsidian 的渲染 token 与编辑器 token 之间共用同一套语义配色。由于 Prism 与 CodeMirror 经常以不同方式分类函数、变量、属性和内置标识符，这些类别统一使用普通代码文本色。这样能保持笔记渲染轻量，并且不改变已渲染代码的结构，同时保留最有价值的语法高亮。不同视图仍使用不同的语法解析器，因此少见的语言专属 token 仍可能存在分类差异。
 
-Components AI 图标控制项已使用 Components `3.1.260813` 验证。它只作用于空会话图标宿主，不会关闭 AI Chat、移除提示文字，也不依赖 Components 的内部 JavaScript API。Components 未安装或相关类名变化时，该规则不会产生效果。
+Components 集成已使用 Components `3.1.260817` 验证。学术三线表修复只作用于 AI 会话中的 Markdown 表格，不会改变 Components 的日历、数据库或其他表格界面。图标控制项只作用于空会话图标宿主，不会关闭 AI Chat、移除提示文字，也不依赖 Components 的内部 JavaScript API。Components 未安装或目标类名变化时，这些规则不会产生效果。
 
 Callout 修复针对 Composer `0.7.0` 中的 RGB 颜色变量。Composer 上游发布修正后，关闭**启用 Composer 0.7.0 Callout 修复**即可移除兼容覆盖。本插件应与 Composer 一同启用，其他主题不属于受支持的外观目标。
 

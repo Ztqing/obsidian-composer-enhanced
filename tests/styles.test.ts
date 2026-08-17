@@ -363,6 +363,23 @@ void test("supports natural, fixed content-width, and content-aware tables", () 
 	assert.doesNotMatch(styles, /\.cm-html-embed\s*\{[^}]*overflow-x: auto/u);
 });
 
+void test("repairs Composer academic tables in PDF and Components AI", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer--AcademicTableStyle[\s\S]*?> \.print[\s\S]*?\.markdown-rendered[\s\S]*?table[\s\S]*?> tbody[\s\S]*?> tr:first-child[\s\S]*?> td,[\s\S]*?body\.composer-enhanced\.composer--AcademicTableStyle[\s\S]*?\.components--ChatMessage[\s\S]*?\.components--MarkdownTextContent\.markdown-rendered[\s\S]*?table[\s\S]*?> tbody[\s\S]*?> tr:first-child[\s\S]*?> td\s*\{[\s\S]*?border-top-width: var\(--table-row-first-top-border-width, 1px\);[\s\S]*?border-top-color: var\(--table-row-first-border-color, var\(--text-faint\)\);[\s\S]*?border-top-style: solid;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced\.composer--AcademicTableStyle[\s\S]*?> \.print[\s\S]*?\.markdown-rendered[\s\S]*?table[\s\S]*?> tbody[\s\S]*?> tr:last-child[\s\S]*?> td,[\s\S]*?body\.composer-enhanced\.composer--AcademicTableStyle[\s\S]*?\.components--ChatMessage[\s\S]*?\.components--MarkdownTextContent\.markdown-rendered[\s\S]*?table[\s\S]*?> tbody[\s\S]*?> tr:last-child[\s\S]*?> td\s*\{[\s\S]*?border-bottom-width: var\(--table-row-last-border-width, 2px\);[\s\S]*?border-bottom-color: var\(--table-row-last-border-color, var\(--text-normal\)\);[\s\S]*?border-bottom-style: solid;/u,
+	);
+	assert.doesNotMatch(
+		styles,
+		/body\.composer-enhanced\.composer--AcademicTableStyle\s+\.markdown-rendered\s+table/u,
+	);
+});
+
 void test("converts Composer 0.7.0 callout triplets into CSS colors", () => {
 	const styles = readFileSync("styles.css", "utf8");
 

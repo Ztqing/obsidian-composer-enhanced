@@ -5,8 +5,8 @@ settings:
   - id: composer-enhanced-about
     title: About Composer Enhanced
     title.zh: 关于 Composer Enhanced
-    description: "Composer Enhanced is an independent companion plugin for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It restores callout colors for Composer 0.7.0 and adds local alignment, sizing, and presentation controls without modifying theme or note files."
-    description.zh: "Composer Enhanced 是 [Composer 主题](https://github.com/vran-dev/obsidian-composer)的独立配套插件。它会修复 Composer 0.7.0 的 Callout 颜色，并在不修改主题或笔记文件的前提下提供本地对齐、尺寸和显示控制。"
+    description: "Composer Enhanced is an independent companion plugin for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It restores callout colors and academic tables for Composer 0.7.0, and adds local alignment, sizing, and presentation controls without modifying theme or note files."
+    description.zh: "Composer Enhanced 是 [Composer 主题](https://github.com/vran-dev/obsidian-composer)的独立配套插件。它会修复 Composer 0.7.0 的 Callout 颜色和学术三线表，并在不修改主题或笔记文件的前提下提供本地对齐、尺寸和显示控制。"
     type: info-text
     markdown: true
   - id: composer-enhanced-compatibility-fixes
@@ -223,6 +223,45 @@ body.composer-enhanced.composer--NiScheme-dark.theme-dark.composer-enhanced-enab
 	--callout-todo: rgb(200, 140, 155);
 	--callout-warning: rgb(203, 166, 88);
 	--callout-quote: rgb(150, 150, 150);
+}
+
+/* Composer 0.7.0 omits academic table separators in print and Components AI. */
+body.composer-enhanced.composer--AcademicTableStyle
+	> .print
+	.markdown-rendered
+	table
+	> tbody
+	> tr:first-child
+	> td,
+body.composer-enhanced.composer--AcademicTableStyle
+	.components--ChatMessage
+	.components--MarkdownTextContent.markdown-rendered
+	table
+	> tbody
+	> tr:first-child
+	> td {
+	border-top-width: var(--table-row-first-top-border-width, 1px);
+	border-top-color: var(--table-row-first-border-color, var(--text-faint));
+	border-top-style: solid;
+}
+
+body.composer-enhanced.composer--AcademicTableStyle
+	> .print
+	.markdown-rendered
+	table
+	> tbody
+	> tr:last-child
+	> td,
+body.composer-enhanced.composer--AcademicTableStyle
+	.components--ChatMessage
+	.components--MarkdownTextContent.markdown-rendered
+	table
+	> tbody
+	> tr:last-child
+	> td {
+	border-bottom-width: var(--table-row-last-border-width, 2px);
+	border-bottom-color: var(--table-row-last-border-color, var(--text-normal));
+	border-bottom-style: solid;
 }
 
 /* One Dark Pro palette */
