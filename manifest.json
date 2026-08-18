@@ -1,7 +1,7 @@
 {
 	"id": "composer-enhanced",
 	"name": "Composer Enhanced",
-	"version": "0.4.0",
+	"version": "0.3.0",
 	"minAppVersion": "1.13.0",
 	"description": "Enhance the Composer theme with focused fixes, optional features, and configurable styles.",
 	"author": "Ztqing",
