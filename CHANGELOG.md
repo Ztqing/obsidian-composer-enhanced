@@ -2,6 +2,13 @@
 
 All notable user-facing changes to Composer Enhanced are documented here. This English changelog is the canonical source for GitHub Release notes.
 
+## 0.4.0
+
+### Fixes
+
+- Keep Code Suite plain-text blocks on the selected Syntax Theme foreground color instead of inheriting Composer token colors.
+- Disable Code Suite line hover highlighting by default while preserving selection and scrolling.
+
 ## 0.2.0
 
 ### Breaking Changes

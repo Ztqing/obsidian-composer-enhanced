@@ -14,21 +14,24 @@ Composer Enhanced 当前提供：
 - 修复 Composer `0.7.0` 学术三线表在 PDF 导出和 Components AI 会话中边框显示不完整的问题。
 - 分别控制阅读视图和实时预览中独占一行的图片与表格对齐方式，为自动调整尺寸的块级图片提供百分比宽度和视口限高，并提供三种表格宽度行为。
 - 可选择隐藏 Components AI 的空会话动画图标，而不关闭 AI Chat。
+- 修复 Code Suite 纯文本代码块的语法主题颜色，并默认关闭其行悬浮高亮。
 
 这些增强只在插件作用域内生效，不会复制、修改或替换已安装的 Composer 主题。
 
 ## Style Settings 与行为
 
-安装并启用 [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) 后，其设置页面中会显示 **Composer Enhanced** 区域。Components 插件、图片和表格控制项分别归入独立分组，其中包括：
+安装并启用 [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) 后，其设置页面中会显示 **Composer Enhanced** 区域。Code Suite、Components 插件、图片和表格控制项分别归入独立分组，其中包括：
 
 - **启用 Composer 0.7.0 Callout 修复**：默认开启。使用 Composer `0.7.0` 时保持开启以恢复 Callout 颜色，Composer 上游修复问题后再将其关闭。
 - **隐藏 Components AI 空状态图标**：默认关闭，因此图标保持显示。开启后会隐藏 AI Chat 空会话中的机器人动画图标，但保留提示文字和 Components AI 的其他功能。
+- **让 Code Suite 纯文本代码块使用语法主题颜色**：默认开启。让 `text`、`txt` 和 `plain` 代码块使用当前选定 Syntax Theme 的前景色，不继承 Composer 的 token 颜色；Code Suite 原有字体保持不变。
+- **关闭 Code Suite 行悬浮高亮**：默认开启。指针经过代码时不再显示 Code Suite 的逐行背景和行号颜色变化。
 - **块级图片对齐**和**表格对齐**：两个独立控制项，均提供**居中**、**靠左**和**靠右**选项，默认值均为**居中**。
 - **块级图片宽度**：在正常正文宽度的 `10%` 到 `100%` 之间设置自动调整尺寸的独占一行图片，默认值为 `100%`。
 - **块级图片最大高度**：按视口高度限制自动调整尺寸的独占一行图片，默认值为 `80vh`。
 - **表格宽度**：选择**默认**以保持表格自然宽度；选择**正文宽度**以让表格左右边缘与普通段落对齐，并让各列均匀分配可用宽度；选择**正文宽度（按内容分配）**以使用相同宽度，同时让单元格内容影响各列比例。默认值为**默认**。
 
-Style Settings 是可选依赖。未安装时，显示 Components AI 空状态图标，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。插件的所有处理均在本地完成，也不会修改笔记源文件。
+Style Settings 是可选依赖。未安装时，显示 Components AI 空状态图标，让 Code Suite 纯文本代码块使用当前 Syntax Theme 的前景色并关闭行悬浮高亮，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。插件的所有处理均在本地完成，也不会修改笔记源文件。
 
 ## 兼容性与限制
 
@@ -39,6 +42,8 @@ Composer Enhanced 当前面向 Composer `0.7.0`，并以 Obsidian `1.13.0` 作�
 图片对齐、宽度和最大高度只作用于独占一行的块级图片，行内图片仍保留在正文排版流中。所选图片宽度是最大值，图片会保持原始纵横比，因此当原始尺寸较小或先触发限高时，实际宽度可以更窄；笔记中已有的显式图片尺寸仍然有效，并跳过自动尺寸控制。当编辑器或其他本地插件添加或删除相邻内容、包装或题注时，图片分类会及时更新，尺寸限制仍会附着在稳定的布局载体上。这套通用处理已使用 [Captions](https://github.com/Ztqing/obsidian-captions) 验证，但 Composer Enhanced 不依赖其类名或内部 API。两种正文宽度表格模式都会与普通段落左右边缘对齐，而不会占满整个 Markdown 窗格：固定模式让各列均分可用宽度，按内容分配模式使用浏览器的自动表格布局，让需要空间的列获得更大比例。表格内容过宽时在窄屏下使用一个独立的横向滚动区域。
 
 Components 集成已使用 Components `3.1.260817` 验证。学术三线表修复只作用于 AI 会话中的 Markdown 表格，不会改变 Components 的日历、数据库或其他表格界面。图标控制项只作用于空会话图标宿主，不会关闭 AI Chat、移除提示文字，也不依赖 Components 的内部 JavaScript API。Components 未安装或目标类名变化时，这些规则不会产生效果。
+
+Code Suite 控制项只作用于它生成的 `data-ocode-lang="text"` 代码块和 `.ocode-wrapper` 行悬浮状态，不会改变其他语言的语法高亮、执行、复制、选择或滚动行为。Code Suite 未安装时这些规则不会产生效果。
 
 Callout 修复针对 Composer `0.7.0` 中的 RGB 颜色变量。Composer 上游发布修正后，关闭**启用 Composer 0.7.0 Callout 修复**即可移除兼容覆盖。本插件应与 Composer 一同启用，其他主题不属于受支持的外观目标。
 

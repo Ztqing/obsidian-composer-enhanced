@@ -131,6 +131,43 @@ void test("offers an opt-in Components AI empty-state icon hiding toggle", () =>
 	);
 });
 
+void test("offers Code Suite plain-text and line-hover controls", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/id: composer-enhanced-code-suite[\s\S]*?title: Code Suite[\s\S]*?type: heading[\s\S]*?level: 2/u,
+	);
+	assert.match(
+		styles,
+		/id: composer-enhanced-code-suite-plain-text[\s\S]*?type: class-toggle[\s\S]*?default: true/u,
+	);
+	assert.match(
+		styles,
+		/id: composer-enhanced-code-suite-disable-line-hover[\s\S]*?type: class-toggle[\s\S]*?default: true/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced[^{}]*\.ocode-wrapper\[data-ocode-lang="text"\][\s\S]*?color: var\(--ocode-fg, var\(--text-normal\)\) !important;/u,
+	);
+	assert.doesNotMatch(
+		styles,
+		/composer-enhanced-code-suite-plain-text[\s\S]*?font-family:/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced[^{}]*\.ocode-wrapper \.line:hover[\s\S]*?background-color: transparent;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced[^{}]*\.ocode-wrapper \.line:hover \.ocode-line-num[\s\S]*?color: var\(--ocode-line-num, #504945\) !important;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced[^{}]*\.cm-line\.HyperMD-codeblock[^{}]*:hover::before[\s\S]*?color: var\(--ocode-line-num, #504945\) !important;/u,
+	);
+});
+
 void test("uses a positive toggle for the Composer callout compatibility fix", () => {
 	const styles = readFileSync("styles.css", "utf8");
 

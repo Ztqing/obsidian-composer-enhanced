@@ -35,6 +35,26 @@ settings:
     description.zh: 开启后将隐藏 Components AI 空会话视图中的机器人动画图标，并停止其视觉动画。
     type: class-toggle
     default: false
+  - id: composer-enhanced-code-suite
+    title: Code Suite
+    title.zh: Code Suite
+    type: heading
+    level: 2
+    collapsed: false
+  - id: composer-enhanced-code-suite-plain-text
+    title: Use Code Suite syntax-theme color for plain-text blocks
+    title.zh: 让 Code Suite 纯文本代码块使用语法主题颜色
+    description: Keep plain-text Code Suite blocks on the selected Syntax Theme foreground color instead of inheriting Composer token colors.
+    description.zh: 让 Code Suite 纯文本代码块使用当前 Syntax Theme 的前景色，不继承 Composer 的 token 颜色。
+    type: class-toggle
+    default: true
+  - id: composer-enhanced-code-suite-disable-line-hover
+    title: Disable Code Suite line hover highlight
+    title.zh: 关闭 Code Suite 行悬浮高亮
+    description: Remove the background and line-number color change when the pointer moves over Code Suite lines.
+    description.zh: 移动指针经过 Code Suite 代码行时，不显示背景和行号颜色变化。
+    type: class-toggle
+    default: true
   - id: composer-enhanced-image-layout
     title: Images
     title.zh: 图片
@@ -127,6 +147,35 @@ body.composer-enhanced {
 	--composer-enhanced-table-container-width: fit-content;
 	--composer-enhanced-table-content-width: auto;
 	--composer-enhanced-table-layout: auto;
+}
+
+/* Keep Code Suite plaintext on the selected Syntax Theme foreground color. */
+body.composer-enhanced:not(.css-settings-manager) .ocode-wrapper[data-ocode-lang="text"] pre.shiki,
+body.composer-enhanced.composer-enhanced-code-suite-plain-text .ocode-wrapper[data-ocode-lang="text"] pre.shiki,
+body.composer-enhanced:not(.css-settings-manager) .ocode-wrapper[data-ocode-lang="text"] pre.shiki code,
+body.composer-enhanced.composer-enhanced-code-suite-plain-text .ocode-wrapper[data-ocode-lang="text"] pre.shiki code,
+body.composer-enhanced:not(.css-settings-manager) .ocode-wrapper[data-ocode-lang="text"] pre.shiki code *:not(.ocode-line-num),
+body.composer-enhanced.composer-enhanced-code-suite-plain-text .ocode-wrapper[data-ocode-lang="text"] pre.shiki code *:not(.ocode-line-num) {
+	color: var(--ocode-fg, var(--text-normal)) !important;
+}
+
+/* Disable Code Suite's per-line hover treatment without affecting other code. */
+body.composer-enhanced:not(.css-settings-manager) .ocode-wrapper .line:hover,
+body.composer-enhanced.composer-enhanced-code-suite-disable-line-hover .ocode-wrapper .line:hover,
+body.composer-enhanced:not(.css-settings-manager) .ocode-file-editor-bg .line:hover,
+body.composer-enhanced.composer-enhanced-code-suite-disable-line-hover .ocode-file-editor-bg .line:hover {
+	background-color: transparent;
+}
+
+body.composer-enhanced:not(.css-settings-manager) .ocode-wrapper .line:hover .ocode-line-num,
+body.composer-enhanced.composer-enhanced-code-suite-disable-line-hover .ocode-wrapper .line:hover .ocode-line-num,
+body.composer-enhanced:not(.css-settings-manager)
+	.cm-s-obsidian
+	.cm-line.HyperMD-codeblock:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end):hover::before,
+body.composer-enhanced.composer-enhanced-code-suite-disable-line-hover
+	.cm-s-obsidian
+	.cm-line.HyperMD-codeblock:not(.HyperMD-codeblock-begin):not(.HyperMD-codeblock-end):hover::before {
+	color: var(--ocode-line-num, #504945) !important;
 }
 
 body.composer-enhanced.composer-enhanced-hide-components-ai-empty-state-icon
