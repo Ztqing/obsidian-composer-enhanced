@@ -50,6 +50,15 @@ void test("maps Shiki tokens onto fenced code content without decorating delimit
 	);
 	assert.ok(ranges.every((range) => range.from > document.line(2).to));
 	assert.ok(ranges.every((range) => range.to < document.line(4).from));
+	assert.deepEqual(
+		ranges.map((range) => range.style),
+		[
+			"color: #c678dd !important",
+			"color: #abb2bf !important",
+			"color: #d19a66 !important",
+			"color: #abb2bf !important",
+		],
+	);
 });
 
 void test("marks only Shiki-themed code block lines for editor chrome", () => {

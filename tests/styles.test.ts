@@ -109,15 +109,21 @@ void test("offers a viewport image height limit", () => {
 	assert.match(styles, /--composer-enhanced-image-max-height: 80vh;/u);
 });
 
-void test("offers Composer and One Dark Pro code block themes", () => {
+void test("offers a visible native default and an opt-in One Dark Pro selector", () => {
 	const styles = readFileSync("styles.css", "utf8");
 
 	assert.match(
 		styles,
-		/id: composer-enhanced-code-theme[\s\S]*?type: class-select[\s\S]*?default: composer-enhanced-code-theme-composer/u,
+		/id: composer-enhanced-code-theme[\s\S]*?type: class-select[\s\S]*?allowEmpty: false[\s\S]*?default: none[\s\S]*?label: Composer \(Default\) \/ Composer（默认）[\s\S]*?value: none/u,
 	);
-	assert.match(styles, /value: composer-enhanced-code-theme-composer/u);
+	assert.match(styles, /title: Code block theme/u);
+	assert.match(styles, /title\.zh: 代码块主题/u);
 	assert.match(styles, /value: composer-enhanced-code-theme-one-dark-pro/u);
+	assert.doesNotMatch(styles, /composer-enhanced-code-theme-composer/u);
+	assert.doesNotMatch(
+		styles,
+		/body\.composer-enhanced\.composer-enhanced-code-theme(?:\s|\{)/u,
+	);
 });
 
 void test("offers an opt-in Components AI empty-state icon hiding toggle", () => {
@@ -154,6 +160,22 @@ void test("keeps One Dark Pro block chrome separate from Shiki token colors", ()
 		paletteRule[1] ?? "",
 		/--composer-enhanced-code-control-muted: #7f848e;/u,
 	);
+	assert.match(
+		paletteRule[1] ?? "",
+		/--composer-enhanced-code-control-background: #404754;/u,
+	);
+	assert.match(
+		paletteRule[1] ?? "",
+		/--composer-enhanced-code-border: #3e4452;/u,
+	);
+	assert.match(
+		paletteRule[1] ?? "",
+		/--composer-enhanced-code-selection: #67769660;/u,
+	);
+	assert.match(
+		paletteRule[1] ?? "",
+		/--composer-enhanced-code-line-number: #495162;/u,
+	);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-caret: #528bff;/u);
 	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-keyword:/u);
 	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-string:/u);
@@ -188,11 +210,8 @@ void test("applies Shiki token markers to all three Markdown views", () => {
 		codeThemeStyles,
 		/\.markdown-source-view\.mod-cm6(?:\.is-live-preview|:not\(\.is-live-preview\))/u,
 	);
-	assert.match(codeThemeStyles, /\.composer-enhanced-code-token\s*\{/u);
-	assert.match(codeThemeStyles, /--composer-enhanced-code-token-color/u);
-	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-italic/u);
-	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-bold/u);
-	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-underline/u);
+	assert.doesNotMatch(codeThemeStyles, /\.composer-enhanced-code-token(?:-|\s*\{)/u);
+	assert.doesNotMatch(codeThemeStyles, /--composer-enhanced-code-token-color/u);
 	assert.match(
 		codeThemeStyles,
 		/code\.composer-enhanced-code-themed[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
@@ -202,14 +221,17 @@ void test("applies Shiki token markers to all three Markdown views", () => {
 		/\.markdown-source-view\.mod-cm6\s+div\.HyperMD-codeblock-bg/u,
 	);
 	assert.doesNotMatch(codeThemeStyles, /\.cm-inline-code/u);
-	assert.doesNotMatch(codeThemeStyles, /\.token\.(?:keyword|string|function)/u);
+	assert.doesNotMatch(codeThemeStyles, /\.token\./u);
 	assert.doesNotMatch(codeThemeStyles, /\.cm-(?:keyword|string|def)/u);
+	assert.doesNotMatch(codeThemeStyles, /\.line:hover/u);
+	assert.doesNotMatch(
+		codeThemeStyles,
+		/\.cm-line\.HyperMD-codeblock\.composer-enhanced-code-block-line-themed:hover/u,
+	);
 });
 
 function extractCodeThemeStyles(styles: string): string {
-	const start = styles.indexOf(
-		"body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro",
-	);
+	const start = styles.indexOf("/* CodeSuite-style One Dark Pro block appearance.");
 	const end = styles.indexOf(
 		"body.composer-enhanced.composer-enhanced-image-align-center",
 		start,

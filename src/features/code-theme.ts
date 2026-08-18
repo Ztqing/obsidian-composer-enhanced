@@ -6,9 +6,7 @@ import {
 	applyReadingCodeTheme,
 	cleanupReadingCodeTheme,
 } from "./reading-code-theme";
-
-export const ONE_DARK_PRO_THEME_CLASS =
-	"composer-enhanced-code-theme-one-dark-pro";
+import { isCodeThemeActive } from "./code-theme-state";
 
 export function registerCodeTheme(plugin: Plugin): void {
 	const controller = new CodeThemeController(plugin);
@@ -74,7 +72,7 @@ class CodeThemeController {
 	}
 
 	isThemeActive(ownerDocument: Document): boolean {
-		return ownerDocument.body.classList.contains(ONE_DARK_PRO_THEME_CLASS);
+		return isCodeThemeActive(ownerDocument);
 	}
 
 	scheduleRefresh(force: boolean): void {

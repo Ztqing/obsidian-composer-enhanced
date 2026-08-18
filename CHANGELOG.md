@@ -6,6 +6,10 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 
 ### Improvements
 
+- Restore the code block theme dropdown with a native Composer default and One Dark Pro as the available theme.
+- Remove hover-only row highlighting from themed code blocks so pointer movement does not change code block backgrounds.
+- Expand bundled syntax support across common web, data, infrastructure, and systems languages while keeping the CodeSuite aliases and plain-text fallback.
+- Add an opt-in CodeSuite-style code color switch that uses Shiki token HTML in Reading view and the same token source for Live Preview and Source mode.
 - Use one Shiki One Dark Pro token source across Reading view, Live Preview, and Source mode so language-specific syntax colors no longer depend on different Obsidian parsers.
 - Normalize fence info strings and rendered `language-*` classes through one language resolver before tokenization.
 - Highlight HTTP request fences with the same One Dark Pro grammar in Reading view, Live Preview, and Source mode.
@@ -13,6 +17,7 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 
 ### Fixes
 
+- Leave Obsidian YAML frontmatter outside the optional code block renderer.
 - Match the official VS Code One Dark Pro background and caret colors instead of retaining Composer's code block background variables.
 - Preserve Composer's academic three-line table borders when exporting notes to PDF.
 - Preserve Composer's academic three-line table borders in Components AI conversations.

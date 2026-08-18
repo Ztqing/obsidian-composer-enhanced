@@ -5,32 +5,73 @@ export const SUPPORTED_CODE_LANGUAGES = new Set([
 	"swift", "kotlin", "xml", "diff", "dockerfile", "makefile",
 	"powershell", "graphql", "haskell", "scala", "php", "perl", "tsx",
 	"jsx", "ini",
+	// Common Shiki grammars that were not part of the original focused list.
+	// Keeping these ids here makes the same resolver usable by Reading view,
+	// Live Preview, and Source mode without changing the note text.
+	"actionscript-3", "jsonc", "json5", "astro", "vue", "svelte", "scss", "less", "dart",
+	"objective-c", "coffee", "clojure", "elixir", "erlang", "fsharp",
+	"groovy", "protobuf", "prisma", "terraform", "nginx", "apache", "asm",
+	"hlsl", "glsl", "solidity", "zig", "cobol", "csv", "properties",
+	"dotenv", "shellsession",
 ]);
 
 const LANGUAGE_ALIASES: Record<string, string> = {
+	"actionscript": "actionscript-3",
+	as: "actionscript-3",
+	asm: "asm",
+	assembly: "asm",
 	"c#": "csharp",
 	"c++": "cpp",
+	cc: "cpp",
 	cs: "csharp",
+	cxx: "cpp",
+	coffee: "coffee",
+	coffeescript: "coffee",
+	console: "shellsession",
 	docker: "dockerfile",
+	dotenv: "dotenv",
+	env: "dotenv",
+	erl: "erlang",
+	"f#": "fsharp",
+	fs: "fsharp",
 	gql: "graphql",
+	h: "c",
 	hs: "haskell",
 	js: "javascript",
+	javascriptreact: "jsx",
+	json5: "json5",
 	kt: "kotlin",
 	make: "makefile",
+	md: "markdown",
+	mdown: "markdown",
+	mkd: "markdown",
+	objc: "objective-c",
 	plain: "text",
 	plaintext: "text",
 	ps1: "powershell",
+	ps: "powershell",
 	pwsh: "powershell",
 	py: "python",
 	rb: "ruby",
 	rest: "http",
 	rs: "rust",
+	sass: "scss",
 	sh: "shellscript",
 	shell: "shellscript",
+	"shell-session": "shellsession",
+	shader: "hlsl",
+	shaderlab: "hlsl",
 	tex: "latex",
 	text: "text",
 	ts: "typescript",
+	typescriptreact: "tsx",
 	txt: "text",
+	tf: "terraform",
+	tfvars: "terraform",
+	terraform: "terraform",
+	proto: "protobuf",
+	protobuf: "protobuf",
+	cob: "cobol",
 	yml: "yaml",
 	zsh: "bash",
 };
@@ -61,6 +102,11 @@ export function resolveCodeLanguage(value: string): string {
 		return resolved;
 	}
 	return "text";
+}
+
+/** CodeSuite-compatible name for the shared fence-language resolver. */
+export function resolveLanguage(value: string): string {
+	return resolveCodeLanguage(value);
 }
 
 export function isPassthroughCodeLanguage(value: string): boolean {

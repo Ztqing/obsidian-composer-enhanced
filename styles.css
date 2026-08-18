@@ -31,14 +31,14 @@ settings:
   - id: composer-enhanced-code-theme
     title: Code block theme
     title.zh: 代码块主题
-    description: Use one Shiki token palette in Reading view, Live Preview, and Source mode. Inline code keeps Composer's existing colors.
-    description.zh: 在阅读视图、实时预览和源码模式中使用同一套 Shiki token 配色。内联代码保留 Composer 的现有颜色。
+    description: Choose a shared Shiki code block theme. Select Composer (Default) to keep Composer's native appearance.
+    description.zh: 选择统一的 Shiki 代码块主题。选择 Composer（默认）即可保留 Composer 的原生外观。
     type: class-select
     allowEmpty: false
-    default: composer-enhanced-code-theme-composer
+    default: none
     options:
       - label: Composer (Default) / Composer（默认）
-        value: composer-enhanced-code-theme-composer
+        value: none
       - label: One Dark Pro
         value: composer-enhanced-code-theme-one-dark-pro
   - id: composer-enhanced-components-plugin
@@ -264,12 +264,16 @@ body.composer-enhanced.composer--AcademicTableStyle
 	border-bottom-style: solid;
 }
 
-/* One Dark Pro block appearance. Shiki supplies individual token colors. */
+/* CodeSuite-style One Dark Pro block appearance. Shiki supplies token colors. */
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
 	--composer-enhanced-code-background: #282c34;
 	--composer-enhanced-code-foreground: #abb2bf;
 	--composer-enhanced-code-control-muted: #7f848e;
+	--composer-enhanced-code-control-background: #404754;
 	--composer-enhanced-code-control-hover: #515a6b;
+	--composer-enhanced-code-border: #3e4452;
+	--composer-enhanced-code-selection: #67769660;
+	--composer-enhanced-code-line-number: #495162;
 	--composer-enhanced-code-caret: #528bff;
 }
 
@@ -288,6 +292,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	pre.composer-enhanced-code-block-themed {
 	background-color: var(--composer-enhanced-code-background);
 	caret-color: var(--composer-enhanced-code-caret);
+	border-color: var(--composer-enhanced-code-border);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -301,26 +306,12 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.composer-enhanced-code-token {
-	color: var(
-		--composer-enhanced-code-token-color,
-		var(--composer-enhanced-code-foreground)
-	) !important;
-}
-
+	pre.composer-enhanced-code-block-themed
+	> code.composer-enhanced-code-themed::selection,
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.composer-enhanced-code-token-italic {
-	font-style: italic;
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.composer-enhanced-code-token-bold {
-	font-weight: bold;
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.composer-enhanced-code-token-underline {
-	text-decoration: underline;
+	pre.composer-enhanced-code-block-themed
+	> code.composer-enhanced-code-themed *::selection {
+	background-color: var(--composer-enhanced-code-selection);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -329,6 +320,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	color: var(--composer-enhanced-code-foreground);
 	background-color: var(--composer-enhanced-code-background);
 	caret-color: var(--composer-enhanced-code-caret);
+	border-color: var(--composer-enhanced-code-border);
 	line-height: 1.5;
 	letter-spacing: initial;
 	word-spacing: initial;
@@ -343,6 +335,8 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.cm-line.composer-enhanced-code-block-line-themed
 	.code-block-flair {
 	color: var(--composer-enhanced-code-control-muted);
+	background-color: var(--composer-enhanced-code-control-background);
+	border-color: var(--composer-enhanced-code-border);
 }
 
 body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
@@ -354,6 +348,7 @@ body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
 	.code-block-flair:hover {
 	color: var(--composer-enhanced-code-foreground);
 	background-color: var(--composer-enhanced-code-control-hover);
+	border-color: var(--composer-enhanced-code-control-background);
 }
 
 body.composer-enhanced.composer-enhanced-image-align-center {

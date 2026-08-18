@@ -9,21 +9,15 @@ import {
 
 import type { CodeThemeHighlighter } from "./code-theme-highlighter";
 import {
-	normalizeCodeThemeColor,
-	normalizeCodeThemeFontStyle,
+	codeThemeTokenStyle,
 	type CodeThemeTokenizer,
 } from "./code-theme-tokens";
 import { scanFencedCodeBlocks } from "./fenced-code-blocks";
-import {
-	CODE_THEME_TOKEN_COLOR_PROPERTY,
-	codeThemeTokenClassNames,
-} from "./reading-code-theme";
 
 export interface EditorCodeThemeRange {
 	from: number;
 	to: number;
-	color?: string;
-	fontStyle?: number;
+	style?: string;
 }
 
 export interface EditorCodeThemeLineRange {
@@ -94,11 +88,10 @@ export function collectEditorCodeThemeDecorations(
 				const from = offset;
 				const to = Math.min(codeLine.to, from + token.content.length);
 				offset = from + token.content.length;
-				const color = normalizeCodeThemeColor(token.color);
-				const fontStyle = normalizeCodeThemeFontStyle(token.fontStyle);
+				const style = codeThemeTokenStyle(token);
 
-				if (from < to && (color || fontStyle)) {
-					tokens.push({ from, to, color, fontStyle });
+				if (from < to && style) {
+					tokens.push({ from, to, style });
 				}
 			}
 		}
@@ -158,15 +151,9 @@ export function createEditorCodeThemeExtension(
 					);
 				}
 				for (const range of decorations.tokens) {
-					const attributes = range.color
-						? {
-							style: `${CODE_THEME_TOKEN_COLOR_PROPERTY}: ${range.color}`,
-						}
-						: undefined;
 					ranges.push(
 						Decoration.mark({
-							attributes,
-							class: codeThemeTokenClassNames(range.fontStyle),
+							attributes: range.style ? { style: range.style } : undefined,
 						}).range(range.from, range.to),
 					);
 				}

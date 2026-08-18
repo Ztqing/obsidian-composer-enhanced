@@ -44,6 +44,10 @@ void test("requests a documented Style Settings metadata refresh on load", () =>
 void test("keeps code theme rendering behind dedicated lifecycle modules", () => {
 	const mainSource = readFileSync("src/main.ts", "utf8");
 	const codeThemeSource = readFileSync("src/features/code-theme.ts", "utf8");
+	const codeThemeStateSource = readFileSync(
+		"src/features/code-theme-state.ts",
+		"utf8",
+	);
 	const codeLanguageSource = readFileSync(
 		"src/features/code-language.ts",
 		"utf8",
@@ -71,10 +75,16 @@ void test("keeps code theme rendering behind dedicated lifecycle modules", () =>
 	assert.match(codeThemeSource, /plugin\.registerEditorExtension/u);
 	assert.match(codeThemeSource, /cleanupReadingCodeTheme/u);
 	assert.match(codeThemeSource, /controller\.highlighter/u);
+	assert.match(codeThemeStateSource, /isCodeThemeActive/u);
 	assert.match(codeLanguageSource, /export function resolveCodeLanguage/u);
 	assert.match(fencedCodeSource, /extractCodeLanguage/u);
 	assert.match(readingCodeSource, /extractCodeLanguage/u);
 	assert.match(highlighterSource, /resolveCodeLanguage/u);
+	assert.match(highlighterSource, /codeToHtml/u);
+	assert.match(readingCodeSource, /ReadingCodeThemeRenderer/u);
+	assert.match(readingCodeSource, /data-composer-enhanced-code-theme/u);
+	assert.match(readingCodeSource, /originalChildren/u);
+	assert.doesNotMatch(readingCodeSource, /composer-enhanced-code-token-/u);
 	assert.doesNotMatch(mainSource, /Shiki|Decoration|querySelector/u);
 });
 
