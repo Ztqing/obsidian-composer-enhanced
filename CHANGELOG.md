@@ -4,8 +4,16 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 
 ## 0.1.1
 
+### Improvements
+
+- Use one Shiki One Dark Pro token source across Reading view, Live Preview, and Source mode so language-specific syntax colors no longer depend on different Obsidian parsers.
+- Normalize fence info strings and rendered `language-*` classes through one language resolver before tokenization.
+- Highlight HTTP request fences with the same One Dark Pro grammar in Reading view, Live Preview, and Source mode.
+- Leave Mermaid, Dataview, DataviewJS, and Query blocks available to their existing renderers when the optional code theme is enabled.
+
 ### Fixes
 
+- Match the official VS Code One Dark Pro background and caret colors instead of retaining Composer's code block background variables.
 - Preserve Composer's academic three-line table borders when exporting notes to PDF.
 - Preserve Composer's academic three-line table borders in Components AI conversations.
 

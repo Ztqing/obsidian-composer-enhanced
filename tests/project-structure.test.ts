@@ -41,12 +41,41 @@ void test("requests a documented Style Settings metadata refresh on load", () =>
 	);
 });
 
-void test("keeps code theme rendering free of runtime token rewriting", () => {
+void test("keeps code theme rendering behind dedicated lifecycle modules", () => {
 	const mainSource = readFileSync("src/main.ts", "utf8");
+	const codeThemeSource = readFileSync("src/features/code-theme.ts", "utf8");
+	const codeLanguageSource = readFileSync(
+		"src/features/code-language.ts",
+		"utf8",
+	);
+	const fencedCodeSource = readFileSync(
+		"src/features/fenced-code-blocks.ts",
+		"utf8",
+	);
+	const readingCodeSource = readFileSync(
+		"src/features/reading-code-theme.ts",
+		"utf8",
+	);
+	const highlighterSource = readFileSync(
+		"src/features/code-theme-highlighter.ts",
+		"utf8",
+	);
 
-	assert.doesNotMatch(mainSource, /ReadingCode|CodeToken/u);
-	assert.equal(existsSync("src/features/reading-code-theme.ts"), false);
-	assert.equal(existsSync("src/features/code-token-classifier.ts"), false);
+	assert.match(mainSource, /registerCodeTheme\(this\);/u);
+	assert.ok(existsSync("src/features/code-theme-highlighter.ts"));
+	assert.ok(existsSync("src/features/code-language.ts"));
+	assert.ok(existsSync("src/features/reading-code-theme.ts"));
+	assert.ok(existsSync("src/features/editor-code-theme.ts"));
+	assert.ok(existsSync("src/features/fenced-code-blocks.ts"));
+	assert.match(codeThemeSource, /plugin\.registerMarkdownPostProcessor/u);
+	assert.match(codeThemeSource, /plugin\.registerEditorExtension/u);
+	assert.match(codeThemeSource, /cleanupReadingCodeTheme/u);
+	assert.match(codeThemeSource, /controller\.highlighter/u);
+	assert.match(codeLanguageSource, /export function resolveCodeLanguage/u);
+	assert.match(fencedCodeSource, /extractCodeLanguage/u);
+	assert.match(readingCodeSource, /extractCodeLanguage/u);
+	assert.match(highlighterSource, /resolveCodeLanguage/u);
+	assert.doesNotMatch(mainSource, /Shiki|Decoration|querySelector/u);
 });
 
 void test("registers and cleans up block image layout markers", () => {

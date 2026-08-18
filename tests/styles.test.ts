@@ -142,75 +142,68 @@ void test("offers an opt-in Components AI empty-state icon hiding toggle", () =>
 	);
 });
 
-void test("maps the One Dark Pro palette to Obsidian code semantics", () => {
+void test("keeps One Dark Pro block chrome separate from Shiki token colors", () => {
 	const styles = readFileSync("styles.css", "utf8");
 	const paletteRule = styles.match(
 		/body\.composer-enhanced\.composer-enhanced-code-theme-one-dark-pro\s*\{([^}]*)\}/u,
 	);
 	assert.ok(paletteRule);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-background: #282c34;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-normal: #abb2bf;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-comment: #7f848e;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-keyword: #c678dd;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-string: #98c379;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-value: #d19a66;/u);
+	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-foreground: #abb2bf;/u);
+	assert.match(
+		paletteRule[1] ?? "",
+		/--composer-enhanced-code-control-muted: #7f848e;/u,
+	);
 	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-caret: #528bff;/u);
+	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-keyword:/u);
+	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-string:/u);
 	assert.doesNotMatch(paletteRule[1] ?? "", /^\s*--code(?:block)?-/mu);
 	assert.match(
 		styles,
-		/\.markdown-reading-view[\s\S]*?\.markdown-preview-view[\s\S]*?pre,[\s\S]*?\.cm-line\.HyperMD-codeblock\s*\{[\s\S]*?--code-background: var\(--composer-enhanced-code-background\);/u,
+		/pre\.composer-enhanced-code-block-themed,[\s\S]*?\.composer-enhanced-code-block-line-themed\s*\{[\s\S]*?--code-background: var\(--composer-enhanced-code-background\);/u,
+	);
+	assert.match(
+		styles,
+		/pre\.composer-enhanced-code-block-themed,[\s\S]*?--codeblock-background: var\(--composer-enhanced-code-background\);[\s\S]*?--codeblock-caret-color: var\(--composer-enhanced-code-caret\);/u,
 	);
 	assert.doesNotMatch(
 		styles,
-		/composer-enhanced-code-theme-one-dark-pro\s+\.markdown-rendered\s+pre/u,
+		/composer-enhanced-code-theme-one-dark-pro\s+\.markdown-rendered\s+(?:pre|code)/u,
 	);
 });
 
-void test("applies One Dark Pro to all three Markdown views", () => {
+void test("applies Shiki token markers to all three Markdown views", () => {
 	const styles = readFileSync("styles.css", "utf8");
 	const codeThemeStyles = extractCodeThemeStyles(styles);
 
 	assert.match(
 		codeThemeStyles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-reading-view[\s\S]*?\.markdown-preview-view[\s\S]*?pre/u,
+		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?pre\.composer-enhanced-code-block-themed/u,
 	);
 	assert.match(
 		codeThemeStyles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6\s+[\s\S]*?HyperMD-codeblock/u,
+		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6\s+[\s\S]*?composer-enhanced-code-block-line-themed/u,
 	);
 	assert.doesNotMatch(
 		codeThemeStyles,
 		/\.markdown-source-view\.mod-cm6(?:\.is-live-preview|:not\(\.is-live-preview\))/u,
 	);
-	assert.match(codeThemeStyles, /\.token\.class-name/u);
-	assert.match(codeThemeStyles, /\.HyperMD-codeblock[\s\S]*?\.cm-type/u);
-	assert.doesNotMatch(codeThemeStyles, /\.composer-enhanced-code-token-/u);
+	assert.match(codeThemeStyles, /\.composer-enhanced-code-token\s*\{/u);
+	assert.match(codeThemeStyles, /--composer-enhanced-code-token-color/u);
+	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-italic/u);
+	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-bold/u);
+	assert.match(codeThemeStyles, /\.composer-enhanced-code-token-underline/u);
 	assert.match(
 		codeThemeStyles,
-		/pre[\s\S]*?> code[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
+		/code\.composer-enhanced-code-themed[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
 	);
-	assert.match(
+	assert.doesNotMatch(
 		codeThemeStyles,
-		/:where\([\s\S]*?pre[\s\S]*?> code\[class\*="language-"\],[\s\S]*?\.markdown-source-view\.mod-cm6 \.HyperMD-codeblock[\s\S]*?\)/u,
+		/\.markdown-source-view\.mod-cm6\s+div\.HyperMD-codeblock-bg/u,
 	);
 	assert.doesNotMatch(codeThemeStyles, /\.cm-inline-code/u);
-	assertSemanticTokenMapping(codeThemeStyles, "comment", ".token.comment", ".cm-comment");
-	assertSemanticTokenMapping(codeThemeStyles, "keyword", ".token.keyword", ".cm-keyword");
-	assertSemanticTokenMapping(codeThemeStyles, "operator", ".token.operator", ".cm-operator");
-	assertSemanticTokenMapping(codeThemeStyles, "string", ".token.string", ".cm-string");
-	assertSemanticTokenMapping(codeThemeStyles, "value", ".token.number", ".cm-number");
-	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.function", ".cm-def");
-	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.property", ".cm-property");
-	assertSemanticTokenMapping(codeThemeStyles, "normal", ".token.variable", ".cm-variable");
-	assertSemanticTokenMapping(codeThemeStyles, "type", ".token.class-name", ".cm-type");
-	assertSemanticTokenMapping(codeThemeStyles, "attribute", ".token.attr-name", ".cm-attribute");
-	assertSemanticTokenMapping(codeThemeStyles, "tag", ".token.tag", ".cm-tag");
-	assertSemanticTokenMapping(
-		codeThemeStyles,
-		"punctuation",
-		".token.punctuation",
-		".cm-punctuation",
-	);
+	assert.doesNotMatch(codeThemeStyles, /\.token\.(?:keyword|string|function)/u);
+	assert.doesNotMatch(codeThemeStyles, /\.cm-(?:keyword|string|def)/u);
 });
 
 function extractCodeThemeStyles(styles: string): string {
@@ -226,25 +219,6 @@ function extractCodeThemeStyles(styles: string): string {
 	assert.notEqual(end, -1);
 
 	return styles.slice(start, end);
-}
-
-function assertSemanticTokenMapping(
-	styles: string,
-	semantic: string,
-	readingToken: string,
-	editorToken: string,
-): void {
-	assert.match(
-		styles,
-		new RegExp(
-			`${escapeRegExp(readingToken)}[\\s\\S]*?${escapeRegExp(editorToken)}[\\s\\S]*?color:\\s*${escapeRegExp(`var(--composer-enhanced-code-${semantic})`)};`,
-			"u",
-		),
-	);
-}
-
-function escapeRegExp(value: string): string {
-	return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
 }
 
 void test("uses a positive toggle for the Composer callout compatibility fix", () => {
