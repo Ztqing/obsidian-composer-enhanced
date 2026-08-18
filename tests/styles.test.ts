@@ -109,23 +109,6 @@ void test("offers a viewport image height limit", () => {
 	assert.match(styles, /--composer-enhanced-image-max-height: 80vh;/u);
 });
 
-void test("offers a visible native default and an opt-in One Dark Pro selector", () => {
-	const styles = readFileSync("styles.css", "utf8");
-
-	assert.match(
-		styles,
-		/id: composer-enhanced-code-theme[\s\S]*?type: class-select[\s\S]*?allowEmpty: false[\s\S]*?default: none[\s\S]*?label: Composer \(Default\) \/ Composer（默认）[\s\S]*?value: none/u,
-	);
-	assert.match(styles, /title: Code block theme/u);
-	assert.match(styles, /title\.zh: 代码块主题/u);
-	assert.match(styles, /value: composer-enhanced-code-theme-one-dark-pro/u);
-	assert.doesNotMatch(styles, /composer-enhanced-code-theme-composer/u);
-	assert.doesNotMatch(
-		styles,
-		/body\.composer-enhanced\.composer-enhanced-code-theme(?:\s|\{)/u,
-	);
-});
-
 void test("offers an opt-in Components AI empty-state icon hiding toggle", () => {
 	const styles = readFileSync("styles.css", "utf8");
 
@@ -147,101 +130,6 @@ void test("offers an opt-in Components AI empty-state icon hiding toggle", () =>
 		/\.components--ChatConversationEmptyState\s*\{[^}]*display: none/gu,
 	);
 });
-
-void test("keeps One Dark Pro block chrome separate from Shiki token colors", () => {
-	const styles = readFileSync("styles.css", "utf8");
-	const paletteRule = styles.match(
-		/body\.composer-enhanced\.composer-enhanced-code-theme-one-dark-pro\s*\{([^}]*)\}/u,
-	);
-	assert.ok(paletteRule);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-background: #282c34;/u);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-foreground: #abb2bf;/u);
-	assert.match(
-		paletteRule[1] ?? "",
-		/--composer-enhanced-code-control-muted: #7f848e;/u,
-	);
-	assert.match(
-		paletteRule[1] ?? "",
-		/--composer-enhanced-code-control-background: #404754;/u,
-	);
-	assert.match(
-		paletteRule[1] ?? "",
-		/--composer-enhanced-code-border: #3e4452;/u,
-	);
-	assert.match(
-		paletteRule[1] ?? "",
-		/--composer-enhanced-code-selection: #67769660;/u,
-	);
-	assert.match(
-		paletteRule[1] ?? "",
-		/--composer-enhanced-code-line-number: #495162;/u,
-	);
-	assert.match(paletteRule[1] ?? "", /--composer-enhanced-code-caret: #528bff;/u);
-	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-keyword:/u);
-	assert.doesNotMatch(paletteRule[1] ?? "", /--composer-enhanced-code-string:/u);
-	assert.doesNotMatch(paletteRule[1] ?? "", /^\s*--code(?:block)?-/mu);
-	assert.match(
-		styles,
-		/pre\.composer-enhanced-code-block-themed,[\s\S]*?\.composer-enhanced-code-block-line-themed\s*\{[\s\S]*?--code-background: var\(--composer-enhanced-code-background\);/u,
-	);
-	assert.match(
-		styles,
-		/pre\.composer-enhanced-code-block-themed,[\s\S]*?--codeblock-background: var\(--composer-enhanced-code-background\);[\s\S]*?--codeblock-caret-color: var\(--composer-enhanced-code-caret\);/u,
-	);
-	assert.doesNotMatch(
-		styles,
-		/composer-enhanced-code-theme-one-dark-pro\s+\.markdown-rendered\s+(?:pre|code)/u,
-	);
-});
-
-void test("applies Shiki token markers to all three Markdown views", () => {
-	const styles = readFileSync("styles.css", "utf8");
-	const codeThemeStyles = extractCodeThemeStyles(styles);
-
-	assert.match(
-		codeThemeStyles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?pre\.composer-enhanced-code-block-themed/u,
-	);
-	assert.match(
-		codeThemeStyles,
-		/composer-enhanced-code-theme-one-dark-pro[\s\S]*?\.markdown-source-view\.mod-cm6\s+[\s\S]*?composer-enhanced-code-block-line-themed/u,
-	);
-	assert.doesNotMatch(
-		codeThemeStyles,
-		/\.markdown-source-view\.mod-cm6(?:\.is-live-preview|:not\(\.is-live-preview\))/u,
-	);
-	assert.doesNotMatch(codeThemeStyles, /\.composer-enhanced-code-token(?:-|\s*\{)/u);
-	assert.doesNotMatch(codeThemeStyles, /--composer-enhanced-code-token-color/u);
-	assert.match(
-		codeThemeStyles,
-		/code\.composer-enhanced-code-themed[\s\S]*?line-height: 1\.5;[\s\S]*?letter-spacing: initial;/u,
-	);
-	assert.doesNotMatch(
-		codeThemeStyles,
-		/\.markdown-source-view\.mod-cm6\s+div\.HyperMD-codeblock-bg/u,
-	);
-	assert.doesNotMatch(codeThemeStyles, /\.cm-inline-code/u);
-	assert.doesNotMatch(codeThemeStyles, /\.token\./u);
-	assert.doesNotMatch(codeThemeStyles, /\.cm-(?:keyword|string|def)/u);
-	assert.doesNotMatch(codeThemeStyles, /\.line:hover/u);
-	assert.doesNotMatch(
-		codeThemeStyles,
-		/\.cm-line\.HyperMD-codeblock\.composer-enhanced-code-block-line-themed:hover/u,
-	);
-});
-
-function extractCodeThemeStyles(styles: string): string {
-	const start = styles.indexOf("/* CodeSuite-style One Dark Pro block appearance.");
-	const end = styles.indexOf(
-		"body.composer-enhanced.composer-enhanced-image-align-center",
-		start,
-	);
-
-	assert.notEqual(start, -1);
-	assert.notEqual(end, -1);
-
-	return styles.slice(start, end);
-}
 
 void test("uses a positive toggle for the Composer callout compatibility fix", () => {
 	const styles = readFileSync("styles.css", "utf8");

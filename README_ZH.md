@@ -6,14 +6,13 @@
 
 ## 增强范围
 
-Composer Enhanced 是为 [Composer 主题](https://github.com/vran-dev/obsidian-composer)设计的独立扩展层。它可以在不修改已安装主题文件的前提下，承载针对性的兼容性修复、图片对齐等可选功能、代码显示优化以及其他小型视觉改进。
+Composer Enhanced 是为 [Composer 主题](https://github.com/vran-dev/obsidian-composer)设计的独立扩展层。它可以在不修改已安装主题文件的前提下，承载针对性的兼容性修复、图片对齐等可选功能以及其他小型视觉改进。
 
 Composer Enhanced 当前提供：
 
 - 修复 Composer `0.7.0` 在 Obsidian `1.13.x` 中 Callout 颜色丢失的问题，覆盖 Composer 内置的 Callout 样式和配色方案。
 - 修复 Composer `0.7.0` 学术三线表在 PDF 导出和 Components AI 会话中边框显示不完整的问题。
 - 分别控制阅读视图和实时预览中独占一行的图片与表格对齐方式，为自动调整尺寸的块级图片提供百分比宽度和视口限高，并提供三种表格宽度行为。
-- 提供可选的 CodeSuite 风格代码块配色；开启后由同一个 Shiki One Dark Pro 来源统一阅读视图、实时预览和源码模式的 token 颜色。
 - 可选择隐藏 Components AI 的空会话动画图标，而不关闭 AI Chat。
 
 这些增强只在插件作用域内生效，不会复制、修改或替换已安装的 Composer 主题。
@@ -23,14 +22,13 @@ Composer Enhanced 当前提供：
 安装并启用 [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) 后，其设置页面中会显示 **Composer Enhanced** 区域。Components 插件、图片和表格控制项分别归入独立分组，其中包括：
 
 - **启用 Composer 0.7.0 Callout 修复**：默认开启。使用 Composer `0.7.0` 时保持开启以恢复 Callout 颜色，Composer 上游修复问题后再将其关闭。
-- **代码块主题**：默认选择 **Composer（默认）**，因此保留 Composer 的原生代码块外观。选择 **One Dark Pro** 后，在阅读视图、实时预览和源码模式中使用同一套 Shiki token 输出。
 - **隐藏 Components AI 空状态图标**：默认关闭，因此图标保持显示。开启后会隐藏 AI Chat 空会话中的机器人动画图标，但保留提示文字和 Components AI 的其他功能。
 - **块级图片对齐**和**表格对齐**：两个独立控制项，均提供**居中**、**靠左**和**靠右**选项，默认值均为**居中**。
 - **块级图片宽度**：在正常正文宽度的 `10%` 到 `100%` 之间设置自动调整尺寸的独占一行图片，默认值为 `100%`。
 - **块级图片最大高度**：按视口高度限制自动调整尺寸的独占一行图片，默认值为 `80vh`。
 - **表格宽度**：选择**默认**以保持表格自然宽度；选择**正文宽度**以让表格左右边缘与普通段落对齐，并让各列均匀分配可用宽度；选择**正文宽度（按内容分配）**以使用相同宽度，同时让单元格内容影响各列比例。默认值为**默认**。
 
-Style Settings 是可选依赖。未安装时，代码块保留 Composer 外观，显示 Components AI 空状态图标，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。代码块主题仅作用于 fenced code block；笔记 YAML frontmatter、内联代码、命令面板高亮以及围栏外的 HTML 源码仍保留 Composer 配色。插件的所有处理均在本地完成，也不会修改笔记源文件。
+Style Settings 是可选依赖。未安装时，显示 Components AI 空状态图标，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。插件的所有处理均在本地完成，也不会修改笔记源文件。
 
 ## 兼容性与限制
 
@@ -39,10 +37,6 @@ Composer Enhanced 当前面向 Composer `0.7.0`，并以 Obsidian `1.13.0` 作�
 学术三线表兼容修复只在 Composer 已选择**三线表（学术）**样式时生效。它会恢复 Obsidian PDF 导出和 Components AI 会话中的表头分隔线与底线颜色，不会改变 Composer 的其他表格样式或其他 Markdown 渲染器。
 
 图片对齐、宽度和最大高度只作用于独占一行的块级图片，行内图片仍保留在正文排版流中。所选图片宽度是最大值，图片会保持原始纵横比，因此当原始尺寸较小或先触发限高时，实际宽度可以更窄；笔记中已有的显式图片尺寸仍然有效，并跳过自动尺寸控制。当编辑器或其他本地插件添加或删除相邻内容、包装或题注时，图片分类会及时更新，尺寸限制仍会附着在稳定的布局载体上。这套通用处理已使用 [Captions](https://github.com/Ztqing/obsidian-captions) 验证，但 Composer Enhanced 不依赖其类名或内部 API。两种正文宽度表格模式都会与普通段落左右边缘对齐，而不会占满整个 Markdown 窗格：固定模式让各列均分可用宽度，按内容分配模式使用浏览器的自动表格布局，让需要空间的列获得更大比例。表格内容过宽时在窄屏下使用一个独立的横向滚动区域。
-
-将**代码块主题**设置为 **One Dark Pro** 后，三个视图都由同一个 Shiki highlighter 生成统一的 token 颜色。阅读视图会在 Obsidian 现有代码块内部使用 CodeSuite 风格的 Shiki token HTML，并保留复制按钮；两个编辑模式则只在 fenced code 内容上叠加不参与编辑的 CodeMirror decoration。文本选择、横向滚动、源码编辑和现有语法包装均会保留，笔记文本不会被修改。选择 **Composer（默认）** 后，Composer 的原生代码块渲染保持不变。
-
-内置语言集合沿用 CodeSuite 的聚焦基线，并额外支持 HTTP 请求代码块，同时覆盖常见 Web、数据、基础设施和系统语法：ActionScript 3、Python、MATLAB、JavaScript、TypeScript、JSX、TSX、Java、C、C++、C#、Objective-C、Rust、Go、Bash、Shell Script、Shell Session、HTML、Astro、Vue、Svelte、CSS、SCSS、Less、JSON、JSONC、JSON5、YAML、TOML、SQL、Markdown、LaTeX、R、Ruby、Lua、Swift、Kotlin、XML、Diff、Dockerfile、Makefile、PowerShell、GraphQL、Haskell、Scala、PHP、Perl、INI、Properties、dotenv、CSV、Dart、CoffeeScript、Clojure、Elixir、Erlang、F#、Groovy、Protobuf、Prisma、Terraform、Nginx、Apache、Assembly、HLSL、GLSL、Solidity、Zig 和 COBOL。常用别名会自动归一化；未标注语言和不支持的语言会降级为纯文本，确保三个视图的颜色一致。`mermaid`、`dataview`、`dataviewjs` 和 `query` 属于 passthrough 语言，继续交由 Obsidian 或对应插件处理。
 
 Components 集成已使用 Components `3.1.260817` 验证。学术三线表修复只作用于 AI 会话中的 Markdown 表格，不会改变 Components 的日历、数据库或其他表格界面。图标控制项只作用于空会话图标宿主，不会关闭 AI Chat、移除提示文字，也不依赖 Components 的内部 JavaScript API。Components 未安装或目标类名变化时，这些规则不会产生效果。
 
@@ -66,8 +60,8 @@ npm run release:check
 
 发布资产为 `main.js`、`manifest.json` 和 `styles.css`。`main.js` 由本地或 CI 构建生成，不纳入 Git 跟踪。
 
-由于打包使用的 Shiki 工具链以 Node.js 20 为基线，开发和发布构建需要 Node.js 20 或更高版本。安装后的插件仍完全在本地跨平台运行，不依赖 Node.js 运行时。
+开发和发布构建需要 Node.js 20 或更高版本。安装后的插件仍完全在本地跨平台运行，不依赖 Node.js 运行时。
 
 ## 致谢
 
-Composer Enhanced 是独立的配套项目。感谢 [Composer](https://github.com/vran-dev/obsidian-composer) 提供本插件所扩展的主题，感谢 [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) 为 Obsidian 提供可配置的 CSS 设置能力，感谢 [Shiki](https://github.com/shikijs/shiki) 与 [One Dark Pro](https://github.com/Binaryify/OneDark-Pro) 提供可选代码配色，并感谢 [CodeSuite](https://github.com/felixleopold/obsidian-code-suite) 展示了在 Obsidian 不同视图间共享 Shiki 与 CodeMirror 的实现思路。
+Composer Enhanced 是独立的配套项目。感谢 [Composer](https://github.com/vran-dev/obsidian-composer) 提供本插件所扩展的主题，感谢 [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) 为 Obsidian 提供可配置的 CSS 设置能力。

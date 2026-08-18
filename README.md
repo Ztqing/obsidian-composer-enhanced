@@ -6,14 +6,13 @@
 
 ## Enhancement scope
 
-Composer Enhanced is designed as a separate extension layer for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It can host focused compatibility fixes, opt-in features such as image alignment, code presentation refinements, and other small visual improvements without modifying the installed theme files.
+Composer Enhanced is designed as a separate extension layer for the [Composer theme](https://github.com/vran-dev/obsidian-composer). It can host focused compatibility fixes, opt-in layout features, and other small visual improvements without modifying the installed theme files.
 
 Composer Enhanced currently provides:
 
 - A compatibility fix that restores colored callouts with Composer `0.7.0` on Obsidian `1.13.x`, including Composer's built-in callout styles and color schemes.
 - A compatibility fix that preserves Composer `0.7.0` academic three-line table borders in PDF exports and Components AI conversations.
 - Independent alignment controls for standalone images and tables in Reading view and Live Preview, percentage width and viewport-height limits for automatically sized block images, and three table width behaviors.
-- An opt-in CodeSuite-style code block palette that uses one Shiki-powered One Dark Pro source in Reading view, Live Preview, and Source mode.
 - An opt-in control for hiding the animated Components AI empty-conversation icon without disabling AI Chat.
 
 These enhancements are scoped to the plugin and do not copy, modify, or replace the installed Composer theme.
@@ -23,14 +22,13 @@ These enhancements are scoped to the plugin and do not copy, modify, or replace 
 When [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) is installed and enabled, a **Composer Enhanced** section appears in its settings page. Components plugin, image, and table controls are organized into separate groups. It provides:
 
 - **Enable Composer 0.7.0 callout fix**: on by default. Keep it on to restore callout colors, then turn it off after Composer fixes the issue upstream.
-- **Code block theme**: **Composer (Default)** by default, so Composer's native code block appearance remains active. Choose **One Dark Pro** to use the same Shiki token output in Reading view, Live Preview, and Source mode.
 - **Hide Components AI empty-state icon**: off by default, so the icon remains visible. Turn it on to hide the animated robot icon in an empty AI Chat conversation while keeping the prompt tip and the rest of Components AI available.
 - **Block image alignment** and **Table alignment**: separate controls with **Center**, **Left**, and **Right** options. Both default to **Center**.
 - **Block image width**: set automatically sized standalone images from `10%` to `100%` of the normal content width. The default is `100%`.
 - **Block image maximum height**: cap automatically sized standalone images relative to the viewport. The default is `80vh`.
 - **Table width**: choose **Default** for natural table width, **Content width** to align the table edges with normal paragraphs and distribute columns evenly, or **Content width, content-aware** to use the same width while letting cell content influence column proportions. The default is **Default**.
 
-Style Settings is optional. Without it, Composer Enhanced keeps Composer's code block appearance, shows the Components AI empty-state icon, centers images and tables, uses `100%` image width with the `80vh` height limit, keeps tables at their natural width, and applies the callout compatibility fix. The code block theme is limited to fenced code blocks: note YAML frontmatter, inline code, command palette highlights, and HTML source outside a fence keep Composer's colors. All work is local, and the plugin does not modify note source files.
+Style Settings is optional. Without it, Composer Enhanced shows the Components AI empty-state icon, centers images and tables, uses `100%` image width with the `80vh` height limit, keeps tables at their natural width, and applies the callout compatibility fix. All work is local, and the plugin does not modify note source files.
 
 ## Compatibility and limitations
 
@@ -39,10 +37,6 @@ Composer Enhanced currently targets Composer `0.7.0` and uses Obsidian `1.13.0` 
 The academic-table compatibility fix activates only when Composer's **Three Line (Academic)** table style is selected. It restores the header separator and bottom border color in Obsidian PDF exports and Components AI conversations without changing Composer's other table styles or other Markdown renderers.
 
 Image alignment, width, and maximum height apply only to standalone block images; inline images remain in the surrounding text flow. The selected image width is a maximum, so images preserve their original aspect ratio and can render narrower when their intrinsic size or height limit is reached first. Existing explicit image dimensions remain in effect and bypass automatic sizing. Image classification stays current when editors or local plugins add or remove nearby content, wrappers, or figure captions, while image limits remain attached to the stable layout carrier. This general handling has been verified with [Captions](https://github.com/Ztqing/obsidian-captions), but Composer Enhanced does not depend on its classes or internal API. Both content-width table modes align with the normal paragraph width rather than the full Markdown pane. The fixed mode gives columns equal available shares, while the content-aware mode uses the browser's automatic table layout to allocate more space to columns that need it. Oversized table content uses one independent horizontal scrolling area on narrow screens.
-
-When **Code block theme** is set to **One Dark Pro**, one Shiki highlighter produces the same token colors for Reading view, Live Preview, and Source mode. Reading view uses CodeSuite-style Shiki token HTML inside Obsidian's existing code block and keeps its copy button; both editor modes add non-editing CodeMirror decorations over fenced code content. This preserves text selection, horizontal scrolling, source editing, and existing syntax wrappers without changing note text. When **Composer (Default)** is selected, Composer's native code block rendering remains unchanged.
-
-The bundled language set follows CodeSuite's focused baseline and adds HTTP request blocks. It also covers common web, data, infrastructure, and systems grammars: ActionScript 3, Python, MATLAB, JavaScript, TypeScript, JSX, TSX, Java, C, C++, C#, Objective-C, Rust, Go, Bash, shell script, shell sessions, HTML, Astro, Vue, Svelte, CSS, SCSS, Less, JSON, JSONC, JSON5, YAML, TOML, SQL, Markdown, LaTeX, R, Ruby, Lua, Swift, Kotlin, XML, Diff, Dockerfile, Makefile, PowerShell, GraphQL, Haskell, Scala, PHP, Perl, INI, Properties, dotenv, CSV, Dart, CoffeeScript, Clojure, Elixir, Erlang, F#, Groovy, Protobuf, Prisma, Terraform, Nginx, Apache, Assembly, HLSL, GLSL, Solidity, Zig, and COBOL. Common aliases are normalized. Fences without a language and unsupported languages fall back to plain text so their colors remain consistent across views. `mermaid`, `dataview`, `dataviewjs`, and `query` are passthrough languages and remain available to Obsidian or their owning plugins.
 
 The Components integrations have been verified with Components `3.1.260817`. The academic-table fix only targets Markdown tables inside AI conversations and does not change Components calendars, databases, or other table surfaces. The icon control only targets the empty-conversation icon host; it does not disable AI Chat, remove the prompt tip, or depend on Components' internal JavaScript API. If Components is unavailable or changes the targeted classes, these rules have no effect.
 
@@ -66,8 +60,8 @@ npm run release:check
 
 Release assets are `main.js`, `manifest.json`, and `styles.css`. `main.js` is generated locally or in CI and is not tracked by Git.
 
-Development and release builds require Node.js 20 or newer because the bundled Shiki toolchain uses that baseline. The installed plugin remains local and cross-platform; it does not require Node.js at runtime.
+Development and release builds require Node.js 20 or newer. The installed plugin remains local and cross-platform; it does not require Node.js at runtime.
 
 ## Acknowledgements
 
-Composer Enhanced is an independent companion project. Thanks to [Composer](https://github.com/vran-dev/obsidian-composer) for the theme it extends, to [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) for configurable CSS settings in Obsidian, to [Shiki](https://github.com/shikijs/shiki) and [One Dark Pro](https://github.com/Binaryify/OneDark-Pro) for the optional code palette, and to [CodeSuite](https://github.com/felixleopold/obsidian-code-suite) for demonstrating the shared Shiki and CodeMirror approach across Obsidian views.
+Composer Enhanced is an independent companion project. Thanks to [Composer](https://github.com/vran-dev/obsidian-composer) for the theme it extends and to [Style Settings](https://github.com/obsidian-community/obsidian-style-settings) for configurable CSS settings in Obsidian.

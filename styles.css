@@ -22,25 +22,6 @@ settings:
     description.zh: 使用 Composer 0.7.0 时保持开启以恢复 Callout 颜色。Composer 上游修复问题后可将其关闭。
     type: class-toggle
     default: true
-  - id: composer-enhanced-code-appearance
-    title: Code appearance
-    title.zh: 代码外观
-    type: heading
-    level: 2
-    collapsed: false
-  - id: composer-enhanced-code-theme
-    title: Code block theme
-    title.zh: 代码块主题
-    description: Choose a shared Shiki code block theme. Select Composer (Default) to keep Composer's native appearance.
-    description.zh: 选择统一的 Shiki 代码块主题。选择 Composer（默认）即可保留 Composer 的原生外观。
-    type: class-select
-    allowEmpty: false
-    default: none
-    options:
-      - label: Composer (Default) / Composer（默认）
-        value: none
-      - label: One Dark Pro
-        value: composer-enhanced-code-theme-one-dark-pro
   - id: composer-enhanced-components-plugin
     title: Components plugin
     title.zh: Components 插件
@@ -262,93 +243,6 @@ body.composer-enhanced.composer--AcademicTableStyle
 	border-bottom-width: var(--table-row-last-border-width, 2px);
 	border-bottom-color: var(--table-row-last-border-color, var(--text-normal));
 	border-bottom-style: solid;
-}
-
-/* CodeSuite-style One Dark Pro block appearance. Shiki supplies token colors. */
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro {
-	--composer-enhanced-code-background: #282c34;
-	--composer-enhanced-code-foreground: #abb2bf;
-	--composer-enhanced-code-control-muted: #7f848e;
-	--composer-enhanced-code-control-background: #404754;
-	--composer-enhanced-code-control-hover: #515a6b;
-	--composer-enhanced-code-border: #3e4452;
-	--composer-enhanced-code-selection: #67769660;
-	--composer-enhanced-code-line-number: #495162;
-	--composer-enhanced-code-caret: #528bff;
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.cm-line.composer-enhanced-code-block-line-themed {
-	--code-background: var(--composer-enhanced-code-background);
-	--code-normal: var(--composer-enhanced-code-foreground);
-	--codeblock-background: var(--composer-enhanced-code-background);
-	--codeblock-caret-color: var(--composer-enhanced-code-caret);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed {
-	background-color: var(--composer-enhanced-code-background);
-	caret-color: var(--composer-enhanced-code-caret);
-	border-color: var(--composer-enhanced-code-border);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed
-	> code.composer-enhanced-code-themed {
-	color: var(--composer-enhanced-code-foreground);
-	background-color: transparent;
-	line-height: 1.5;
-	letter-spacing: initial;
-	word-spacing: initial;
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed
-	> code.composer-enhanced-code-themed::selection,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed
-	> code.composer-enhanced-code-themed *::selection {
-	background-color: var(--composer-enhanced-code-selection);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.cm-line.HyperMD-codeblock.composer-enhanced-code-block-line-themed {
-	color: var(--composer-enhanced-code-foreground);
-	background-color: var(--composer-enhanced-code-background);
-	caret-color: var(--composer-enhanced-code-caret);
-	border-color: var(--composer-enhanced-code-border);
-	line-height: 1.5;
-	letter-spacing: initial;
-	word-spacing: initial;
-}
-
-/* Code block controls */
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed
-	button.copy-code-button,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.cm-line.composer-enhanced-code-block-line-themed
-	.code-block-flair {
-	color: var(--composer-enhanced-code-control-muted);
-	background-color: var(--composer-enhanced-code-control-background);
-	border-color: var(--composer-enhanced-code-border);
-}
-
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	pre.composer-enhanced-code-block-themed
-	button.copy-code-button:hover,
-body.composer-enhanced.composer-enhanced-code-theme-one-dark-pro
-	.markdown-source-view.mod-cm6
-	.cm-line.composer-enhanced-code-block-line-themed
-	.code-block-flair:hover {
-	color: var(--composer-enhanced-code-foreground);
-	background-color: var(--composer-enhanced-code-control-hover);
-	border-color: var(--composer-enhanced-code-control-background);
 }
 
 body.composer-enhanced.composer-enhanced-image-align-center {

@@ -1,5 +1,5 @@
 import * as assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
 interface PluginManifest {
@@ -39,53 +39,6 @@ void test("requests a documented Style Settings metadata refresh on load", () =>
 		mainSource,
 		/this\.app\.workspace\.trigger\("parse-style-settings"\);/u,
 	);
-});
-
-void test("keeps code theme rendering behind dedicated lifecycle modules", () => {
-	const mainSource = readFileSync("src/main.ts", "utf8");
-	const codeThemeSource = readFileSync("src/features/code-theme.ts", "utf8");
-	const codeThemeStateSource = readFileSync(
-		"src/features/code-theme-state.ts",
-		"utf8",
-	);
-	const codeLanguageSource = readFileSync(
-		"src/features/code-language.ts",
-		"utf8",
-	);
-	const fencedCodeSource = readFileSync(
-		"src/features/fenced-code-blocks.ts",
-		"utf8",
-	);
-	const readingCodeSource = readFileSync(
-		"src/features/reading-code-theme.ts",
-		"utf8",
-	);
-	const highlighterSource = readFileSync(
-		"src/features/code-theme-highlighter.ts",
-		"utf8",
-	);
-
-	assert.match(mainSource, /registerCodeTheme\(this\);/u);
-	assert.ok(existsSync("src/features/code-theme-highlighter.ts"));
-	assert.ok(existsSync("src/features/code-language.ts"));
-	assert.ok(existsSync("src/features/reading-code-theme.ts"));
-	assert.ok(existsSync("src/features/editor-code-theme.ts"));
-	assert.ok(existsSync("src/features/fenced-code-blocks.ts"));
-	assert.match(codeThemeSource, /plugin\.registerMarkdownPostProcessor/u);
-	assert.match(codeThemeSource, /plugin\.registerEditorExtension/u);
-	assert.match(codeThemeSource, /cleanupReadingCodeTheme/u);
-	assert.match(codeThemeSource, /controller\.highlighter/u);
-	assert.match(codeThemeStateSource, /isCodeThemeActive/u);
-	assert.match(codeLanguageSource, /export function resolveCodeLanguage/u);
-	assert.match(fencedCodeSource, /extractCodeLanguage/u);
-	assert.match(readingCodeSource, /extractCodeLanguage/u);
-	assert.match(highlighterSource, /resolveCodeLanguage/u);
-	assert.match(highlighterSource, /codeToHtml/u);
-	assert.match(readingCodeSource, /ReadingCodeThemeRenderer/u);
-	assert.match(readingCodeSource, /data-composer-enhanced-code-theme/u);
-	assert.match(readingCodeSource, /originalChildren/u);
-	assert.doesNotMatch(readingCodeSource, /composer-enhanced-code-token-/u);
-	assert.doesNotMatch(mainSource, /Shiki|Decoration|querySelector/u);
 });
 
 void test("registers and cleans up block image layout markers", () => {

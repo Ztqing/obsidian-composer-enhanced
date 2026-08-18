@@ -1,6 +1,6 @@
 {
 	"name": "composer-enhanced",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Enhance the Composer theme with focused fixes, optional features, and configurable styles.",
 	"main": "main.js",
 	"type": "module",
@@ -33,9 +33,7 @@
 		"typescript-eslint": "8.35.1"
 	},
 	"dependencies": {
-		"@codemirror/state": "^6.5.0",
 		"@codemirror/view": "6.38.6",
-		"obsidian": "1.13.0",
-		"shiki": "^4.0.2"
+		"obsidian": "1.13.0"
 	}
 }

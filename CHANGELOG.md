@@ -2,6 +2,12 @@
 
 All notable user-facing changes to Composer Enhanced are documented here. This English changelog is the canonical source for GitHub Release notes.
 
+## 0.2.0
+
+### Breaking Changes
+
+- Remove the code appearance controls so code blocks use Composer's native rendering.
+
 ## 0.1.1
 
 ### Improvements
