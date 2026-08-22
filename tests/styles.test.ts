@@ -14,6 +14,29 @@ void test("registers an independent Style Settings section", () => {
 	assert.match(styles, /\n\s+type: variable-number-slider\n/u);
 });
 
+void test("positions Mermaid Zoom controls at the top right and reveals them on hover", () => {
+	const styles = readFileSync("styles.css", "utf8");
+
+	assert.match(
+		styles,
+		/id: composer-enhanced-enable-mermaid-zoom[\s\S]*?title: Enable Mermaid Zoom button styling[\s\S]*?title\.zh: 启用 Mermaid Zoom 按钮样式[\s\S]*?type: class-toggle[\s\S]*?default: true/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced:not\(\.css-settings-manager\) \.mermaid-zoom-ready \.mermaid-zoom-fullscreen-btn,[\s\S]*?top: 8px;[\s\S]*?right: 8px;[\s\S]*?bottom: auto;/u,
+	);
+	assert.match(styles, /@media \(any-hover: hover\)/u);
+	assert.match(
+		styles,
+		/body\.composer-enhanced:not\(\.css-settings-manager\) \.mermaid-zoom-ready \.mermaid-zoom-fullscreen-btn,[\s\S]*?opacity: 0;[\s\S]*?pointer-events: none;/u,
+	);
+	assert.match(
+		styles,
+		/body\.composer-enhanced:not\(\.css-settings-manager\) \.mermaid-zoom-ready:hover \.mermaid-zoom-fullscreen-btn,[\s\S]*?opacity: 0\.72;[\s\S]*?pointer-events: auto;/u,
+	);
+	assert.doesNotMatch(styles, /(^|\n)\.mermaid-zoom-ready\s*\{/u);
+});
+
 void test("reserves the plugin namespace for future settings", () => {
 	const styles = readFileSync("styles.css", "utf8");
 	const settingIds = [...styles.matchAll(/^\s+- id: (.+)$/gmu)].map(

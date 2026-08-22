@@ -15,6 +15,7 @@ Composer Enhanced 当前提供：
 - 分别控制阅读视图和实时预览中独占一行的图片与表格对齐方式，为自动调整尺寸的块级图片提供百分比宽度和视口限高，并提供三种表格宽度行为。
 - 可选择隐藏 Components AI 的空会话动画图标，而不关闭 AI Chat。
 - 修复 Code Suite 纯文本代码块的语法主题颜色，并默认关闭其行悬浮高亮。
+- 改进 Mermaid Zoom 样式：将全屏按钮置于 Mermaid 图右上角，并在支持鼠标的设备上仅于悬停时显示。
 
 这些增强只在插件作用域内生效，不会复制、修改或替换已安装的 Composer 主题。
 
@@ -26,12 +27,14 @@ Composer Enhanced 当前提供：
 - **隐藏 Components AI 空状态图标**：默认关闭，因此图标保持显示。开启后会隐藏 AI Chat 空会话中的机器人动画图标，但保留提示文字和 Components AI 的其他功能。
 - **让 Code Suite 纯文本代码块使用语法主题颜色**：默认开启。让 `text`、`txt` 和 `plain` 代码块使用当前选定 Syntax Theme 的前景色，不继承 Composer 的 token 颜色；Code Suite 原有字体保持不变。
 - **关闭 Code Suite 行悬浮高亮**：默认开启。指针经过代码时不再显示 Code Suite 的逐行背景和行号颜色变化。
+- **启用 Mermaid Zoom 按钮样式**：默认开启。将全屏按钮置于右上角，并在支持指针悬停的设备上于悬停图表时显示。
 - **块级图片对齐**和**表格对齐**：两个独立控制项，均提供**居中**、**靠左**和**靠右**选项，默认值均为**居中**。
 - **块级图片宽度**：在正常正文宽度的 `10%` 到 `100%` 之间设置自动调整尺寸的独占一行图片，默认值为 `100%`。
 - **块级图片最大高度**：按视口高度限制自动调整尺寸的独占一行图片，默认值为 `80vh`。
 - **表格宽度**：选择**默认**以保持表格自然宽度；选择**正文宽度**以让表格左右边缘与普通段落对齐，并让各列均匀分配可用宽度；选择**正文宽度（按内容分配）**以使用相同宽度，同时让单元格内容影响各列比例。默认值为**默认**。
+- **Mermaid Zoom 按钮**：全屏按钮位于 Mermaid 图右上角，在支持指针悬停的设备上仅悬停图表时显示；纯触控设备没有悬停状态，因此按钮会保持可用。
 
-Style Settings 是可选依赖。未安装时，显示 Components AI 空状态图标，让 Code Suite 纯文本代码块使用当前 Syntax Theme 的前景色并关闭行悬浮高亮，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。插件的所有处理均在本地完成，也不会修改笔记源文件。
+Style Settings 是可选依赖。未安装时，显示 Components AI 空状态图标，让 Code Suite 纯文本代码块使用当前 Syntax Theme 的前景色并关闭行悬浮高亮，启用 Mermaid Zoom 按钮样式，图片和表格保持居中，图片宽度为 `100%`、限高为 `80vh`，表格保持自然宽度，同时启用 Callout 兼容修复。插件的所有处理均在本地完成，也不会修改笔记源文件。
 
 ## 兼容性与限制
 
@@ -44,6 +47,8 @@ Composer Enhanced 当前面向 Composer `0.7.0`，并以 Obsidian `1.13.0` 作�
 Components 集成已使用 Components `3.1.260817` 验证。学术三线表修复只作用于 AI 会话中的 Markdown 表格，不会改变 Components 的日历、数据库或其他表格界面。图标控制项只作用于空会话图标宿主，不会关闭 AI Chat、移除提示文字，也不依赖 Components 的内部 JavaScript API。Components 未安装或目标类名变化时，这些规则不会产生效果。
 
 Code Suite 控制项只作用于它生成的 `data-ocode-lang="text"` 代码块和 `.ocode-wrapper` 行悬浮状态，不会改变其他语言的语法高亮、执行、复制、选择或滚动行为。Code Suite 未安装时这些规则不会产生效果。
+
+Mermaid Zoom 样式只作用于其 `.mermaid-zoom-ready` 图表和 `.mermaid-zoom-fullscreen-btn` 控件，仅调整按钮位置和显示方式；Mermaid 的渲染、缩放手势和全屏行为仍由 Mermaid Zoom 提供。纯触控设备因没有悬停状态，按钮会保持显示。
 
 Callout 修复针对 Composer `0.7.0` 中的 RGB 颜色变量。Composer 上游发布修正后，关闭**启用 Composer 0.7.0 Callout 修复**即可移除兼容覆盖。本插件应与 Composer 一同启用，其他主题不属于受支持的外观目标。
 

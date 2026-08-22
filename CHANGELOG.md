@@ -4,6 +4,11 @@ All notable user-facing changes to Composer Enhanced are documented here. This E
 
 ## 0.3.0
 
+### Improvements
+
+- Place the Mermaid Zoom fullscreen button at the top right of Mermaid diagrams and reveal it on hover when a mouse is available.
+- Add a Style Settings toggle for Mermaid Zoom button styling, enabled by default.
+
 ### Fixes
 
 - Keep Code Suite plain-text blocks on the selected Syntax Theme foreground color instead of inheriting Composer token colors.

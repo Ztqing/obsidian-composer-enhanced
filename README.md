@@ -15,6 +15,7 @@ Composer Enhanced currently provides:
 - Independent alignment controls for standalone images and tables in Reading view and Live Preview, percentage width and viewport-height limits for automatically sized block images, and three table width behaviors.
 - An opt-in control for hiding the animated Components AI empty-conversation icon without disabling AI Chat.
 - Code Suite compatibility controls that keep plain-text blocks on the selected Syntax Theme foreground color and disable line hover highlighting by default.
+- Mermaid Zoom compatibility styling that places the fullscreen button at the top right of Mermaid diagrams and reveals it on hover when a mouse is available.
 
 These enhancements are scoped to the plugin and do not copy, modify, or replace the installed Composer theme.
 
@@ -26,12 +27,14 @@ When [Style Settings](https://github.com/obsidian-community/obsidian-style-setti
 - **Hide Components AI empty-state icon**: off by default, so the icon remains visible. Turn it on to hide the animated robot icon in an empty AI Chat conversation while keeping the prompt tip and the rest of Components AI available.
 - **Use Code Suite syntax-theme color for plain-text blocks**: on by default. Keeps Code Suite `text`, `txt`, and `plain` fences on the selected Syntax Theme foreground color instead of Composer's token colors; Code Suite's original font remains unchanged.
 - **Disable Code Suite line hover highlight**: on by default. Removes Code Suite's per-line background and line-number color change when the pointer moves over code.
+- **Enable Mermaid Zoom button styling**: on by default. Places the fullscreen button at the top right and reveals it on hover on pointer devices.
 - **Block image alignment** and **Table alignment**: separate controls with **Center**, **Left**, and **Right** options. Both default to **Center**.
 - **Block image width**: set automatically sized standalone images from `10%` to `100%` of the normal content width. The default is `100%`.
 - **Block image maximum height**: cap automatically sized standalone images relative to the viewport. The default is `80vh`.
 - **Table width**: choose **Default** for natural table width, **Content width** to align the table edges with normal paragraphs and distribute columns evenly, or **Content width, content-aware** to use the same width while letting cell content influence column proportions. The default is **Default**.
+- **Mermaid Zoom button**: the fullscreen button sits at the top right of Mermaid diagrams and is shown on hover on pointer devices. On touch-only devices it remains available without hover.
 
-Style Settings is optional. Without it, Composer Enhanced shows the Components AI empty-state icon, keeps Code Suite plain-text blocks on the selected Syntax Theme foreground color, disables Code Suite line hover highlighting, centers images and tables, uses `100%` image width with the `80vh` height limit, keeps tables at their natural width, and applies the callout compatibility fix. All work is local, and the plugin does not modify note source files.
+Style Settings is optional. Without it, Composer Enhanced shows the Components AI empty-state icon, keeps Code Suite plain-text blocks on the selected Syntax Theme foreground color, disables Code Suite line hover highlighting, enables Mermaid Zoom button styling, centers images and tables, uses `100%` image width with the `80vh` height limit, keeps tables at their natural width, and applies the callout compatibility fix. All work is local, and the plugin does not modify note source files.
 
 ## Compatibility and limitations
 
@@ -44,6 +47,8 @@ Image alignment, width, and maximum height apply only to standalone block images
 The Components integrations have been verified with Components `3.1.260817`. The academic-table fix only targets Markdown tables inside AI conversations and does not change Components calendars, databases, or other table surfaces. The icon control only targets the empty-conversation icon host; it does not disable AI Chat, remove the prompt tip, or depend on Components' internal JavaScript API. If Components is unavailable or changes the targeted classes, these rules have no effect.
 
 The Code Suite controls target its rendered `data-ocode-lang="text"` blocks and `.ocode-wrapper` line hover state. They do not change syntax highlighting for other languages, Code Suite execution, copying, selection, or scroll behavior. If Code Suite is unavailable, these rules have no effect.
+
+Mermaid Zoom styling targets its `.mermaid-zoom-ready` blocks and `.mermaid-zoom-fullscreen-btn` control. It changes only the control position and visibility; Mermaid rendering, zoom gestures, and fullscreen behavior remain provided by Mermaid Zoom. On touch-only devices, the control remains visible because hover is unavailable.
 
 The callout fix targets Composer `0.7.0`'s RGB color variables. After Composer publishes an upstream correction, turn off **Enable Composer 0.7.0 callout fix** to remove the compatibility override. The plugin is intended to be enabled alongside Composer; other themes are outside its supported appearance target.
 
